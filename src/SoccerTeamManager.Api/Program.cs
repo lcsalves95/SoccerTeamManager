@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Domain.Commands;
 using SoccerTeamManager.Infra.Data.Contexts;
-using SoccerTeamManager.Infra.IoC.Exceptions;
 using SoccerTeamManager.Infra.IoC.PipelineBehavior;
 using System.Reflection;
 
@@ -18,10 +17,8 @@ builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(typeof(GetPlayerQuery));
 builder.Services.AddMediatR(typeof(InsertPlayerCommand));
 
-
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,7 +48,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

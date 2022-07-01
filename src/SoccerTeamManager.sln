@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoccerTeamManager.Test", "S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 - Infra", "04 - Infra", "{2E7D9E7E-823A-4403-B14B-A464143E12B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoccerTeamManager.Infra.IoC", "SoccerTeamManager.Infra.IoC\SoccerTeamManager.Infra.IoC.csproj", "{70A1F7D8-E26B-4BDC-8694-DB44CD654FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoccerTeamManager.Infra", "SoccerTeamManager.Infra.IoC\SoccerTeamManager.Infra.csproj", "{70A1F7D8-E26B-4BDC-8694-DB44CD654FE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -32,7 +32,7 @@ namespace SoccerTeamManager.Infra.IoC.PipelineBehavior
                 .ToDictionary(x => x.Key, x => x.Values);
             if (errorsDictionary.Any())
             {
-                throw new Exceptions.ValidationException(errorsDictionary);
+                //throw new Exceptions.ValidationException(errorsDictionary);
             }
             return await next();
         }

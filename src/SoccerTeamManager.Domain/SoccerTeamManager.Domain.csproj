@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SoccerTeamManager.Infra.IoC\SoccerTeamManager.Infra.IoC.csproj" />
+    <ProjectReference Include="..\SoccerTeamManager.Infra.IoC\SoccerTeamManager.Infra.csproj" />
   </ItemGroup>
 
 </Project>
