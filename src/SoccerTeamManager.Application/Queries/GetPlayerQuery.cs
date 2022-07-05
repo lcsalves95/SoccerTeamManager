@@ -1,9 +1,10 @@
 ﻿using SoccerTeamManager.Domain.Entities;
-using SoccerTeamManager.Infra.IoC.PipelineBehavior;
+using SoccerTeamManager.Infra.Messages;
+using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Application.Queries
 {
-    public class GetPlayerQuery : IQuery<Player>
+    public class GetPlayerQuery : IQuery<RequestResult<Player>>
     {
         public Guid playerId { get; private set; }
 

@@ -8,7 +8,7 @@ namespace SoccerTeamManager.Api.Controllers
 {
     [Route("api/players")]
     [ApiController]
-    public class PlayerController : ControllerBase
+    public class PlayerController : BaseController
     {
         private readonly IMediator _mediator;
 
@@ -28,8 +28,8 @@ namespace SoccerTeamManager.Api.Controllers
         public async Task<IActionResult> Insert(PlayerViewModel model)
         {
             var command = new InsertPlayerCommand(model.Name, model.DateOfBirth, model.Country, model.TeamId);
-            var player = await _mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new { id = player.Id }, player);
+            var requestResult = await _mediator.Send(command);
+            return GetCustomResponse(requestResult.GetGenericResponse(), nameof(Get), HttpContext.Request.Path.Value);
         }
     }
 }

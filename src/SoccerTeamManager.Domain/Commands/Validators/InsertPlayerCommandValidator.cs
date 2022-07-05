@@ -1,16 +1,12 @@
 ﻿using FluentValidation;
-using SoccerTeamManager.Domain.Interfaces;
+using SoccerTeamManager.Infra.PipelineBehavior;
 
 namespace SoccerTeamManager.Domain.Commands.Validators
 {
-    public class InsertPlayerCommandValidator : AbstractValidator<InsertPlayerCommand>
+    public class InsertPlayerCommandValidator : AbstractValidator<InsertPlayerCommand>, IShallowValidator<InsertPlayerCommand>
     {
-        private readonly ITeamRepository _teamRepository;
-
-        public InsertPlayerCommandValidator(ITeamRepository teamRepository)
+        public InsertPlayerCommandValidator()
         {
-            _teamRepository = teamRepository;
-
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("O nome deve ser informado.")
@@ -26,13 +22,13 @@ namespace SoccerTeamManager.Domain.Commands.Validators
                 .WithMessage("O nome deve ser informado.")
                 .WithErrorCode("InvalidCountry");
 
-            When(x => x.TeamId != null, () =>
-            {
-                RuleFor(x => x.TeamId)
-                    .Must(BeAValidTeam)
-                    .WithMessage("")
-                    .WithErrorCode("InvalidTeam");
-            });
+            //When(x => x.TeamId != null, () =>
+            //{
+            //    RuleFor(x => x.TeamId)
+            //        .Must(BeAValidTeam)
+            //        .WithMessage("")
+            //        .WithErrorCode("InvalidTeam");
+            //});
         }
 
         private bool BeAValidName(string name)
@@ -52,9 +48,9 @@ namespace SoccerTeamManager.Domain.Commands.Validators
             return true;
         }
 
-        private bool BeAValidTeam(Guid? teamId)
-        {
-            return _teamRepository.Select(x => x.Id == teamId).Result != default;
-        }
+        //private bool BeAValidTeam(Guid? teamId)
+        //{
+        //    return _teamRepository.Select(x => x.Id == teamId).Result != default;
+        //}
     }
 }

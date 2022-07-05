@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SoccerTeamManager.Infra.IoC.PipelineBehavior
+namespace SoccerTeamManager.Infra.Messages
 {
     public interface ICommand<out TResponse> : IRequest<TResponse>
     {

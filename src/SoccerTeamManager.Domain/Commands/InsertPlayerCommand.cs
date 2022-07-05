@@ -1,9 +1,10 @@
 ﻿using SoccerTeamManager.Domain.Entities;
-using SoccerTeamManager.Infra.IoC.PipelineBehavior;
+using SoccerTeamManager.Infra.Messages;
+using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Domain.Commands
 {
-    public class InsertPlayerCommand : ICommand<Player>
+    public class InsertPlayerCommand : ICommand<RequestResult<Player>>
     {
         public string Name { get; private set; }
         public DateTime DateOfBirth { get; private set; }

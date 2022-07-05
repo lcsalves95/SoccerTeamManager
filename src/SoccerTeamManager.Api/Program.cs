@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Domain.Commands;
 using SoccerTeamManager.Infra.Data.Contexts;
-using SoccerTeamManager.Infra.IoC.PipelineBehavior;
+using SoccerTeamManager.Infra.PipelineBehavior;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,13 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(typeof(SoccerTeamManager.Application.AssemblyReference).Assembly);
+builder.Services.AddMediatR(typeof(SoccerTeamManager.Domain.AssemblyReference).Assembly);
 
-builder.Services.AddMediatR(typeof(GetPlayerQuery));
-builder.Services.AddMediatR(typeof(InsertPlayerCommand));
+builder.Services.Scan(scan => scan.FromApplicationDependencies()
+    .AddClasses(@class => @class.AssignableTo(typeof(IShallowValidator<>))).AsImplementedInterfaces())
+    .AddTransient(typeof(IPipelineBehavior<,>), typeof(ShallowValidationBehavior<,>));
 
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.Scan(scan => scan.FromApplicationDependencies()
+    .AddClasses(@class => @class.AssignableTo(typeof(IDeepValidator<>))).AsImplementedInterfaces())
+    .AddTransient(typeof(IPipelineBehavior<,>), typeof(DeepValidationBehavior<,>));
+
+builder.Services.AddValidatorsFromAssembly(typeof(SoccerTeamManager.Domain.AssemblyReference).Assembly);
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
