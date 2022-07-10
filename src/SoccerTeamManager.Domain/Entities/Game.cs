@@ -2,13 +2,13 @@
 {
     public class Game : Entity
     {
-        public DateTime? StartTime { get; private set; } = null;
-        public int? Goal { get; private set; } = null;
-        public int? MinuteBreak { get; private set; } = null;
-        public int? MinuteAddition { get; private set; } = null;
-        public int? Replacement { get; private set; } = null;
-        public int? Warning { get; private set; } = null;
-        public DateTime? EndTime { get; private set; } = null;
+        public DateTime? StartTime { get; private set; }
+        public int? Goal { get; private set; }
+        public int? MinuteBreak { get; private set; }
+        public int? MinuteAddition { get; private set; }
+        public int? Replacement { get; private set; }
+        public int? Warning { get; private set; }
+        public DateTime? EndTime { get; private set; }
 
         /* Torneio */
         public Guid TournamentId { get; private set; }
@@ -30,15 +30,27 @@
         }
 
         public Game(
+                Guid id,
                 Guid tournamentId, 
                 Guid firstTeamId,
-                Guid secondTeamId,
-                DateTime? startTime)
+                Guid secondTeamId)
         {
+            Id = id;
             TournamentId = tournamentId;
             FirstTeamId = firstTeamId;
             SecondTeamId = secondTeamId;
-            StartTime = startTime;
+        }
+
+        public Game(
+               Guid id,
+               Tournament tournament,
+               Team firstTeam,
+               Team secondTeam)
+        {
+            Id = id;
+            Tournament = tournament;
+            FirstTeam = firstTeam;
+            SecondTeam = secondTeam;
         }
 
         public void UpdateStartTime(DateTime startTime)

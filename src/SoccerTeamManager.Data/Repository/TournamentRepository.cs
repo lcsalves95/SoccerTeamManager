@@ -40,5 +40,10 @@ namespace SoccerTeamManager.Infra.Data.Repository
 
             return entity;
         }
+
+        public async Task<Tournament> GetById(Guid entityId)
+        {
+            return _dbSet.Find(entityId);
+        }
     }
 }

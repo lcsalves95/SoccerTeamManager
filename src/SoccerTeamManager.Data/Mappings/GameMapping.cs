@@ -11,13 +11,16 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id).IsRequired();
-            builder.Property(p => p.StartTime).IsRequired();
-            builder.Property(p => p.Goal).IsRequired();
-            builder.Property(p => p.MinuteBreak).IsRequired();
-            builder.Property(p => p.MinuteAddition).IsRequired();
-            builder.Property(p => p.Replacement).IsRequired();
-            builder.Property(p => p.Warning).IsRequired();
-            builder.Property(p => p.EndTime).IsRequired();
+            builder.Property(p => p.TournamentId).IsRequired();
+            builder.Property(p => p.FirstTeamId).IsRequired();
+            builder.Property(p => p.SecondTeamId).IsRequired();
+            builder.Property(p => p.StartTime);
+            builder.Property(p => p.Goal);
+            builder.Property(p => p.MinuteBreak);
+            builder.Property(p => p.MinuteAddition);
+            builder.Property(p => p.Replacement);
+            builder.Property(p => p.Warning);
+            builder.Property(p => p.EndTime);
             builder.Property(p => p.CreatedAt).IsRequired();
             builder.Property(p => p.UpdatedAt);
 

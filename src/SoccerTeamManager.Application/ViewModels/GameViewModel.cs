@@ -2,19 +2,28 @@
 {
     public class GameViewModel
     {
-        public string Name { get; set; }
-       
-        /* Times */
-        public ICollection<Guid> TeamsId { get; private set; }
+        public Guid? Id { get; set; }
 
-        /* Partidas */
-        public ICollection<Guid> GamesId { get; private set; }
+        /* Torneio */
+        public Guid TournamentId { get; set; }
 
-        public GameViewModel(string name, ICollection<Guid> teamsId, ICollection<Guid> gamesId)
+        /* Time 1 */
+        public Guid FirstTeamId { get; set; }
+
+        /* Time 2 */
+        public Guid SecondTeamId { get; set; }
+
+        public GameViewModel()
         {
-            Name = name;
-            TeamsId = teamsId;
-            GamesId = gamesId;
+
+        }
+
+        public GameViewModel(Guid id, Guid tournamentId, Guid firstTeamId, Guid secondTeamId)
+        {
+            Id = id;
+            TournamentId = tournamentId;
+            FirstTeamId = firstTeamId;
+            SecondTeamId = secondTeamId;
         }
     }
 }
