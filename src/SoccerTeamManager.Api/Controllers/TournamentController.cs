@@ -1,8 +1,11 @@
-﻿using MediatR;
+﻿using Confluent.Kafka;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Application.ViewModels;
 using SoccerTeamManager.Domain.Commands;
+using SoccerTeamManager.Infra.Responses;
+using System.Text.Json;
 
 namespace SoccerTeamManager.Api.Controllers
 {
@@ -31,9 +34,21 @@ namespace SoccerTeamManager.Api.Controllers
         public async Task<IActionResult> InsertStartTime(Guid idTournament, Guid idGame, GameStartTimeViewModel model)
         {
             var command = new UpdateGameStartTimeCommand(idGame, model.StartTime);
-            var requestResult = await _mediator.Send(command);
+            var messageResult = await SendMensagem(command);
 
-            return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
+            if (messageResult)
+            {
+                var result = new RequestResult<bool>(System.Net.HttpStatusCode.Created, true, Enumerable.Empty<ErrorModel>());
+                return GetCustomResponse(result.GetGenericResponse(), "", HttpContext.Request.Path.Value);
+            }
+            else
+            {
+                var result = new RequestResult<bool>(System.Net.HttpStatusCode.Created, true, Enumerable.Empty<ErrorModel>());
+                return GetCustomResponse(result.GetGenericResponse(), "", HttpContext.Request.Path.Value);
+            }
+
+            //var requestResult = await _mediator.Send(command);
+            //return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
         }
 
         [HttpPost("{idTournament:guid}/games/{idGame:guid}/events/goal")]
@@ -43,6 +58,34 @@ namespace SoccerTeamManager.Api.Controllers
             var requestResult = await _mediator.Send(command);
 
             return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
+        }
+
+        private async Task<bool> SendMensagem(UpdateGameStartTimeCommand mensagem)
+        {
+            var config = new ProducerConfig
+            {
+                BootstrapServers = "localhost:9092"
+            };
+
+            var producer = new ProducerBuilder<Null, string>(config).Build();
+
+            using (producer)
+            {
+                try
+                {
+                    var result = await producer.ProduceAsync("puc-aws-soccer-start-time", 
+                                                new Message<Null, string> 
+                                                { 
+                                                    Value = JsonSerializer.Serialize(mensagem) 
+                                                });
+
+                    return true;
+                }
+                catch (ProduceException<Null, string> ex)
+                {
+                    return false;
+                }
+            }
         }
     }
 }
