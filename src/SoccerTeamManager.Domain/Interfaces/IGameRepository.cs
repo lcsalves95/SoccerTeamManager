@@ -9,5 +9,6 @@ namespace SoccerTeamManager.Domain.Interfaces
         Task<Game> Insert(Game entity);
         Task<IEnumerable<Game>> Select(Expression<Func<Game, bool>> filter);
         Task<Game> Update(Game entity);
+        Task<Game> GetById(Guid entityId);
     }
 }

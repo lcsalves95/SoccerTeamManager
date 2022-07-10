@@ -26,5 +26,23 @@ namespace SoccerTeamManager.Api.Controllers
 
             return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
         }
+
+        [HttpPost("{idTournament:guid}/games/{idGame:guid}/events/start-date")]
+        public async Task<IActionResult> InsertStartTime(Guid idTournament, Guid idGame, GameStartTimeViewModel model)
+        {
+            var command = new UpdateGameStartTimeCommand(idGame, model.StartTime);
+            var requestResult = await _mediator.Send(command);
+
+            return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
+        }
+
+        [HttpPost("{idTournament:guid}/games/{idGame:guid}/events/goal")]
+        public async Task<IActionResult> InsertGoal(Guid idTournament, Guid idGame, GameGoalViewModel model)
+        {
+            var command = new UpdateGameGoalCommand(idGame, model.Goal);
+            var requestResult = await _mediator.Send(command);
+
+            return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
+        }
     }
 }
