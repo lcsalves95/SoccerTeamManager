@@ -4,13 +4,13 @@ using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Application.Queries
 {
-    public class GetPlayerQuery : IQuery<RequestResult<Player>>
+    public class GetTeamQuery : IQuery<RequestResult<Team>>
     {
-        public Guid PlayerId { get; private set; }
+        public Guid TeamId { get; private set; }
 
-        public GetPlayerQuery(Guid playerId)
+        public GetTeamQuery(Guid teamId)
         {
-            PlayerId = playerId;
+            TeamId = teamId;
         }
     }
 }

@@ -12,6 +12,9 @@ namespace SoccerTeamManager.Domain.Entities
         public ICollection<Player>? Players { get; private set; }
         public ICollection<Transfer>? OutTranfers { get; private set; }
         public ICollection<Transfer>? InTranfers { get; private set; }
+        public ICollection<Tournament>? Tournaments { get; private set; }
+        public ICollection<Game>? FirstGames { get; private set; }
+        public ICollection<Game>? SecondGames { get; private set; }
 
         public Team()
         {
@@ -23,6 +26,14 @@ namespace SoccerTeamManager.Domain.Entities
             Name = name;
             Location = location;
             CreatedAt = createdAt;
+        }
+
+        public Team(Guid id, string name, States location)
+        {
+            Id = id;
+            Name = name;
+            Location = location;
+            CreatedAt = DateTime.Now;
         }
 
         public void UpdateName(string name)

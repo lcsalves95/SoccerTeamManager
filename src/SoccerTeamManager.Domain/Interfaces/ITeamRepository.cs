@@ -5,9 +5,10 @@ namespace SoccerTeamManager.Domain.Interfaces
 {
     public interface ITeamRepository
     {
-        Task Delete(Guid teamId);
-        Task<Team> Insert(Team team);
+        Task Delete(Guid entityId);
+        Task<Team> Insert(Team entity);
         Task<IEnumerable<Team>> Select(Expression<Func<Team, bool>> filter);
-        Task<Player> Update(Team team);
+        Task<Team> Update(Team entity);
+        Task<Team> GetById(Guid entityId);
     }
 }

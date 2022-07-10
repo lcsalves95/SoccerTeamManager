@@ -3,14 +3,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Domain.Commands;
+using SoccerTeamManager.Domain.Interfaces;
 using SoccerTeamManager.Infra.Data.Contexts;
+using SoccerTeamManager.Infra.Data.Repository;
+using SoccerTeamManager.Infra.Data.UoW;
 using SoccerTeamManager.Infra.PipelineBehavior;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+//builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddDbContext<ApplicationDbContext>(opt => opt.UseInMemoryDatabase("ApplicationDb"));
 
 builder.Services.AddMediatR(typeof(SoccerTeamManager.Application.AssemblyReference).Assembly);
 builder.Services.AddMediatR(typeof(SoccerTeamManager.Domain.AssemblyReference).Assembly);
@@ -25,6 +29,12 @@ builder.Services.Scan(scan => scan.FromApplicationDependencies()
 
 builder.Services.AddValidatorsFromAssembly(typeof(SoccerTeamManager.Domain.AssemblyReference).Assembly);
 
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
