@@ -13,7 +13,7 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.Property(p => p.Id).IsRequired();
             builder.Property(p => p.Name).HasMaxLength(256).IsRequired();
             builder.Property(p => p.DateOfBirth).IsRequired();
-            builder.Property(p => p.Country).HasMaxLength(256).IsRequired();
+            builder.Property(p => p.CountryId).IsRequired();
             builder.Property(p => p.CurrentTeamId);
             builder.Property(p => p.CreatedAt).IsRequired();
             builder.Property(p => p.UpdatedAt);
@@ -25,6 +25,10 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.HasMany(p => p.Tranfers)
                 .WithOne(t => t.Player)
                 .HasForeignKey(t => t.PlayerId);
+
+            builder.HasOne(p => p.Country)
+                .WithMany(c => c.Players)
+                .HasForeignKey(p => p.CountryId);
 
             builder.ToTable("Player", "manager");
         }

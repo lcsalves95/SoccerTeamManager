@@ -1,5 +1,4 @@
 ﻿using SoccerTeamManager.Infra.Messages;
-using SoccerTeamManager.Infra.Responses;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 

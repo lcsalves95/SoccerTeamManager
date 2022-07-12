@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SoccerTeamManager.Domain.Enums;
+using SoccerTeamManager.Infra.Base;
 
 namespace SoccerTeamManager.Domain.Entities
 {

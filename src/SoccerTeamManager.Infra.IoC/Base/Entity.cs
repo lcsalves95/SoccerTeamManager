@@ -1,4 +1,4 @@
-﻿namespace SoccerTeamManager.Domain.Entities
+﻿namespace SoccerTeamManager.Infra.Base
 {
     public class Entity
     {

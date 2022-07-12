@@ -1,4 +1,6 @@
-﻿namespace SoccerTeamManager.Domain.Entities
+﻿using SoccerTeamManager.Infra.Base;
+
+namespace SoccerTeamManager.Domain.Entities
 {
     public class Transfer : Entity
     {

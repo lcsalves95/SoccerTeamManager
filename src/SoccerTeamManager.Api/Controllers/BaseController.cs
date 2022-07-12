@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SoccerTeamManager.Infra.Base;
 using SoccerTeamManager.Infra.Responses;
 using System.Net;
 
 namespace SoccerTeamManager.Api.Controllers
 {
-    public class BaseController : ControllerBase
+    public class BaseController<TResponse> : ControllerBase
+        where TResponse : Entity
     {
-        protected IActionResult GetCustomResponse(RequestResult<object?> requestResult, string? successInstance = null, string? failInstance = null)
+        protected IActionResult GetCustomResponse(RequestResult<TResponse> requestResult, string? successInstance = null, string? failInstance = null)
         {
             return requestResult.StatusCode switch
             {
                 HttpStatusCode.OK => Ok(requestResult.Data),
-                HttpStatusCode.Created => Created(successInstance ?? string.Empty, requestResult.Data),
+                HttpStatusCode.Created => CreatedAtAction(successInstance ?? string.Empty, new { requestResult.Data.Id }, requestResult.Data),
                 HttpStatusCode.NoContent => NoContent(),
                 HttpStatusCode.BadRequest => BadRequest(GetErrorResponse(failInstance ?? string.Empty, requestResult.Errors)),
                 HttpStatusCode.NotFound => NotFound(),

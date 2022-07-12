@@ -9,7 +9,7 @@ namespace SoccerTeamManager.Infra.PipelineBehavior
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : class, ICommand<TResponse>
         where TResponse : class
-    { 
+    {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
         private readonly HttpStatusCode _statusCode;
 
@@ -32,7 +32,7 @@ namespace SoccerTeamManager.Infra.PipelineBehavior
                 .GroupBy(x => x.ErrorMessage)
                 .Select(x => x.First())
                 .Select(x => new ErrorModel(x.ErrorCode, x.ErrorMessage));
-            
+
             if (validationFailures.Any())
             {
                 var responseType = typeof(TResponse);

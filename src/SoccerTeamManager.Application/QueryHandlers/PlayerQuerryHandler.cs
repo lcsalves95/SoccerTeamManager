@@ -14,7 +14,7 @@ namespace SoccerTeamManager.Application.QueryHandlers
 
         public async Task<RequestResult<Player>> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
         {
-            return new RequestResult<Player>(System.Net.HttpStatusCode.Created, new Player("Teste", DateTime.Now.AddYears(-20), "Brazil", Guid.Empty), Enumerable.Empty<ErrorModel>());
+            return new RequestResult<Player>(System.Net.HttpStatusCode.Created, new Player("Teste", DateTime.Now.AddYears(-20), Guid.NewGuid(), Guid.Empty), Enumerable.Empty<ErrorModel>());
         }
     }
 }
