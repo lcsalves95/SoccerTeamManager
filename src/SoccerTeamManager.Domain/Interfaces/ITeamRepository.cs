@@ -1,13 +1,13 @@
 ﻿using SoccerTeamManager.Domain.Entities;
-using System.Linq.Expressions;
+using SoccerTeamManager.Domain.Enums;
 
 namespace SoccerTeamManager.Domain.Interfaces
 {
     public interface ITeamRepository
     {
-        Task Delete(Guid teamId);
+        void Delete(Team team);
         Task<Team> Insert(Team team);
-        Task<IEnumerable<Team>> Select(Expression<Func<Team, bool>> filter);
-        Task<Player> Update(Team team);
+        Task<IEnumerable<Team>> Select(Guid? id, string? name, States? state);
+        Team Update(Team team);
     }
 }

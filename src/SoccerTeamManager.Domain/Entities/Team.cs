@@ -16,7 +16,9 @@ namespace SoccerTeamManager.Domain.Entities
 
         public Team()
         {
-
+            Players = new List<Player>();
+            OutTranfers = new List<Transfer>();
+            InTranfers = new List<Transfer>();
         }
 
         public Team(string name, States location, DateTime createdAt)

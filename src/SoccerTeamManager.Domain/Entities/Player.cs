@@ -8,7 +8,7 @@ namespace SoccerTeamManager.Domain.Entities
         public DateTime DateOfBirth { get; private set; }
         public Guid CountryId { get; private set; }
         public Guid? CurrentTeamId { get; private set; }
-        public long FifaCode { get; private set; }
+        public long CbfCode { get; private set; }
 
         public Country Country { get; private set; }
         public Team? CurrentTeam { get; private set; }
@@ -16,15 +16,18 @@ namespace SoccerTeamManager.Domain.Entities
 
         public Player()
         {
-
+            Country = new Country();
+            CurrentTeam = new Team();
+            Tranfers = new List<Transfer>();
         }
 
-        public Player(string name, DateTime dateOfBirth, Guid countryId, Guid? currentTeamId)
+        public Player(string name, DateTime dateOfBirth, Guid countryId, Guid? currentTeamId, long cbfCode)
         {
             Name = name;
             DateOfBirth = dateOfBirth;
             CountryId = countryId;
             CurrentTeamId = currentTeamId;
+            CbfCode = cbfCode;
         }
 
         public void UpdateName(string name)
