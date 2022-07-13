@@ -10,6 +10,7 @@ namespace SoccerTeamManager.Infra.Data.Contexts
         public DbSet<Transfer> Transfers { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<Game> Games { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

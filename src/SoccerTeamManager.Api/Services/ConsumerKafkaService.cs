@@ -39,7 +39,7 @@ namespace SoccerTeamManager.Api.Services
                     {
                         var cr = consumer.Consume(cancellationToken);
                         var json = cr.Message.Value;
-                        var command = JsonSerializer.Deserialize<UpdateGameStartTimeCommand>(json);
+                        var command = JsonSerializer.Deserialize<InsertEventStartTimeCommand>(json);
 
                         using var scope = _serviceScopeFactory.CreateScope();
                         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
@@ -88,7 +88,7 @@ namespace SoccerTeamManager.Api.Services
                     {
                         var cr = consumer.Consume(cancellationToken);
                         var json = cr.Message.Value;
-                        var command = JsonSerializer.Deserialize<UpdateGameGoalCommand>(json);
+                        var command = JsonSerializer.Deserialize<InsertEventGoalCommand>(json);
 
                         using var scope = _serviceScopeFactory.CreateScope();
                         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();

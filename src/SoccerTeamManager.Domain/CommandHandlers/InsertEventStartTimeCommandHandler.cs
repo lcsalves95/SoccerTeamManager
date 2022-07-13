@@ -6,24 +6,29 @@ using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Domain.CommandHandlers
 {
-    public class UpdateGameGoalCommandHandler : IRequestHandler<UpdateGameGoalCommand, RequestResult<bool>>
+    public class InsertEventStartTimeCommandHandler : IRequestHandler<InsertEventStartTimeCommand, RequestResult<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEventRepository _eventRepository;
         private readonly IGameRepository _gameRepository;
 
-        public UpdateGameGoalCommandHandler(
+        public InsertEventStartTimeCommandHandler(
                     IUnitOfWork unitOfWork,
+                    IEventRepository eventRepository,
                     IGameRepository gameRepository)
         {
             _unitOfWork = unitOfWork;
+            _eventRepository = eventRepository;
             _gameRepository = gameRepository;
         }
 
-        public async Task<RequestResult<bool>> Handle(UpdateGameGoalCommand request, CancellationToken cancellationToken)
+        public async Task<RequestResult<bool>> Handle(InsertEventStartTimeCommand request, CancellationToken cancellationToken)
         {
             var game = await _gameRepository.GetById(request.IdGame);
 
-            game.UpdateGoal(request.Goal);
+            var eve = new Event(game, request.EventType);
+            eve.UpdateStartTime(request.StartTime);
+            _eventRepository.Insert(eve);
 
             if (_unitOfWork.Commit())
             {

@@ -5,6 +5,7 @@ using SoccerTeamManager.Api.Services;
 using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Application.ViewModels;
 using SoccerTeamManager.Domain.Commands;
+using SoccerTeamManager.Domain.Enums;
 using SoccerTeamManager.Infra.Responses;
 using System.Text.Json;
 
@@ -34,7 +35,7 @@ namespace SoccerTeamManager.Api.Controllers
         [HttpPost("{idTournament:guid}/games/{idGame:guid}/events/start-date")]
         public async Task<IActionResult> InsertStartTime(Guid idTournament, Guid idGame, GameStartTimeViewModel model)
         {
-            var command = new UpdateGameStartTimeCommand(idGame, model.StartTime);
+            var command = new InsertEventStartTimeCommand(idGame, model.StartTime, EventTypes.StartTime);
             
             var messageResult = await ProducerKafkaService.SendMsgStartTimeAsync(command);
             if (messageResult)
@@ -54,7 +55,7 @@ namespace SoccerTeamManager.Api.Controllers
         [HttpPost("{idTournament:guid}/games/{idGame:guid}/events/goal")]
         public async Task<IActionResult> InsertGoal(Guid idTournament, Guid idGame, GameGoalViewModel model)
         {
-            var command = new UpdateGameGoalCommand(idGame, model.Goal);
+            var command = new InsertEventGoalCommand(idGame, model.Goal, EventTypes.Goal);
 
             var messageResult = await ProducerKafkaService.SendMsgGoalAsync(command);
             if (messageResult)

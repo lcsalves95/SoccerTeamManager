@@ -8,7 +8,7 @@ namespace SoccerTeamManager.Api.Services
     public static class ProducerKafkaService
     {
 
-        public static async Task<bool> SendMsgStartTimeAsync(UpdateGameStartTimeCommand mensagem)
+        public static async Task<bool> SendMsgStartTimeAsync(InsertEventStartTimeCommand mensagem)
 		{
             var config = new ProducerConfig
             {
@@ -44,7 +44,7 @@ namespace SoccerTeamManager.Api.Services
             }
         }
 
-        public static async Task<bool> SendMsgGoalAsync(UpdateGameGoalCommand mensagem)
+        public static async Task<bool> SendMsgGoalAsync(InsertEventGoalCommand mensagem)
         {
             var config = new ProducerConfig
             {

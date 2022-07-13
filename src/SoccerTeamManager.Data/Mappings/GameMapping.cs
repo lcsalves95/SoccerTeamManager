@@ -14,15 +14,12 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.Property(p => p.TournamentId).IsRequired();
             builder.Property(p => p.FirstTeamId).IsRequired();
             builder.Property(p => p.SecondTeamId).IsRequired();
-            builder.Property(p => p.StartTime);
-            builder.Property(p => p.Goal);
-            builder.Property(p => p.MinuteBreak);
-            builder.Property(p => p.MinuteAddition);
-            builder.Property(p => p.Replacement);
-            builder.Property(p => p.Warning);
-            builder.Property(p => p.EndTime);
             builder.Property(p => p.CreatedAt).IsRequired();
             builder.Property(p => p.UpdatedAt);
+
+            builder.HasMany(p => p.Events)
+                .WithOne(t => t.Game)
+                .HasForeignKey(t => t.GameId);
 
             builder.ToTable("Game", "manager");
         }
