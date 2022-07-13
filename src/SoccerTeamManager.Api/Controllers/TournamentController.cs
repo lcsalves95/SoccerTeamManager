@@ -1,6 +1,7 @@
 ﻿using Confluent.Kafka;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SoccerTeamManager.Api.Services;
 using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Application.ViewModels;
 using SoccerTeamManager.Domain.Commands;
@@ -34,58 +35,41 @@ namespace SoccerTeamManager.Api.Controllers
         public async Task<IActionResult> InsertStartTime(Guid idTournament, Guid idGame, GameStartTimeViewModel model)
         {
             var command = new UpdateGameStartTimeCommand(idGame, model.StartTime);
-            var messageResult = await SendMensagem(command);
-
+            
+            var messageResult = await ProducerKafkaService.SendMsgStartTimeAsync(command);
             if (messageResult)
             {
                 var result = new RequestResult<bool>(System.Net.HttpStatusCode.Created, true, Enumerable.Empty<ErrorModel>());
+                
                 return GetCustomResponse(result.GetGenericResponse(), "", HttpContext.Request.Path.Value);
             }
             else
             {
-                var result = new RequestResult<bool>(System.Net.HttpStatusCode.Created, true, Enumerable.Empty<ErrorModel>());
+                var result = new RequestResult<bool>(System.Net.HttpStatusCode.InternalServerError, false, Enumerable.Empty<ErrorModel>());
+                
                 return GetCustomResponse(result.GetGenericResponse(), "", HttpContext.Request.Path.Value);
             }
-
-            //var requestResult = await _mediator.Send(command);
-            //return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
         }
 
         [HttpPost("{idTournament:guid}/games/{idGame:guid}/events/goal")]
         public async Task<IActionResult> InsertGoal(Guid idTournament, Guid idGame, GameGoalViewModel model)
         {
             var command = new UpdateGameGoalCommand(idGame, model.Goal);
-            var requestResult = await _mediator.Send(command);
 
-            return GetCustomResponse(requestResult.GetGenericResponse(), "", HttpContext.Request.Path.Value);
-        }
-
-        private async Task<bool> SendMensagem(UpdateGameStartTimeCommand mensagem)
-        {
-            var config = new ProducerConfig
+            var messageResult = await ProducerKafkaService.SendMsgGoalAsync(command);
+            if (messageResult)
             {
-                BootstrapServers = "localhost:9092"
-            };
+                var result = new RequestResult<bool>(System.Net.HttpStatusCode.Created, true, Enumerable.Empty<ErrorModel>());
 
-            var producer = new ProducerBuilder<Null, string>(config).Build();
-
-            using (producer)
+                return GetCustomResponse(result.GetGenericResponse(), "", HttpContext.Request.Path.Value);
+            }
+            else
             {
-                try
-                {
-                    var result = await producer.ProduceAsync("puc-aws-soccer-start-time", 
-                                                new Message<Null, string> 
-                                                { 
-                                                    Value = JsonSerializer.Serialize(mensagem) 
-                                                });
+                var result = new RequestResult<bool>(System.Net.HttpStatusCode.InternalServerError, false, Enumerable.Empty<ErrorModel>());
 
-                    return true;
-                }
-                catch (ProduceException<Null, string> ex)
-                {
-                    return false;
-                }
+                return GetCustomResponse(result.GetGenericResponse(), "", HttpContext.Request.Path.Value);
             }
         }
+
     }
 }
