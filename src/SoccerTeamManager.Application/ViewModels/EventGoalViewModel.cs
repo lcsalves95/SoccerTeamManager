@@ -1,15 +1,15 @@
 ﻿namespace SoccerTeamManager.Application.ViewModels
 {
-    public class GameGoalViewModel
+    public class EventGoalViewModel
     {
         public int Goal { get; set; }
 
-        public GameGoalViewModel()
+        public EventGoalViewModel()
         {
 
         }
 
-        public GameGoalViewModel(int goal)
+        public EventGoalViewModel(int goal)
         {
             Goal = goal;
         }
