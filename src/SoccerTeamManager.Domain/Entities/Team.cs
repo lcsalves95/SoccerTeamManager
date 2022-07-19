@@ -10,22 +10,23 @@ namespace SoccerTeamManager.Domain.Entities
         public string Name { get; private set; } = string.Empty;
         [JsonConverter(typeof(StringEnumConverter))]
         public States Location { get; private set; }
+
         public ICollection<Player>? Players { get; private set; }
         public ICollection<Transfer>? OutTranfers { get; private set; }
         public ICollection<Transfer>? InTranfers { get; private set; }
+        public ICollection<Tournament>? Tournaments { get; private set; }
+        public ICollection<Match>? HomeMatches { get; private set; }
+        public ICollection<Match>? VisitorMatches { get; private set; }
+        public ICollection<TounamentTeam>? TournamentTeams { get; private set; }
 
         public Team()
         {
-            Players = new List<Player>();
-            OutTranfers = new List<Transfer>();
-            InTranfers = new List<Transfer>();
         }
 
-        public Team(string name, States location, DateTime createdAt)
+        public Team(string name, States location)
         {
             Name = name;
             Location = location;
-            CreatedAt = createdAt;
         }
 
         public void UpdateName(string name)
@@ -37,7 +38,7 @@ namespace SoccerTeamManager.Domain.Entities
             UpdatedAt = DateTime.Now;
         }
 
-        public void UpdateState(States location)
+        public void UpdateLocation(States location)
         {
             if (!Enum.IsDefined(typeof(States), location))
                 throw new ArgumentException("Parameter [location] must be valid.", nameof(location));

@@ -15,8 +15,11 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.Property(p => p.DateOfBirth).IsRequired();
             builder.Property(p => p.CountryId).IsRequired();
             builder.Property(p => p.CurrentTeamId);
+            builder.Property(p => p.CbfCode).IsRequired();
             builder.Property(p => p.CreatedAt).IsRequired();
             builder.Property(p => p.UpdatedAt);
+
+            builder.HasIndex(p => p.CbfCode).IsUnique();
 
             builder.HasOne(p => p.CurrentTeam)
                 .WithMany(t => t.Players)

@@ -219,6 +219,8 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 new Country("Zâmbia"),
                 new Country("Zimbabwe")
                 );
+
+            builder.ToTable("Country", "manager");
         }
     }
 }

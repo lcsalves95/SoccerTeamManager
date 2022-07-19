@@ -9,9 +9,9 @@ namespace SoccerTeamManager.Domain.Entities
         public Guid DestinationTeamId { get; private set; }
         public double Ammount { get; private set; }
 
-        public Player Player { get; private set; }
-        public Team OriginTeam { get; private set; }
-        public Team DestinationTeam { get; private set; }
+        public Player? Player { get; private set; }
+        public Team? OriginTeam { get; private set; }
+        public Team? DestinationTeam { get; private set; }
 
         public Transfer()
         {

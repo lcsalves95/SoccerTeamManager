@@ -8,7 +8,8 @@
 
         public Entity()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.Now;
         }
     }
 }

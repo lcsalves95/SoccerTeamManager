@@ -10,7 +10,7 @@ namespace SoccerTeamManager.Domain.Entities
         public Guid? CurrentTeamId { get; private set; }
         public long CbfCode { get; private set; }
 
-        public Country Country { get; private set; }
+        public Country? Country { get; private set; }
         public Team? CurrentTeam { get; private set; }
         public ICollection<Transfer>? Tranfers { get; private set; }
 
@@ -36,6 +36,15 @@ namespace SoccerTeamManager.Domain.Entities
                 throw new ArgumentException("Parameter [name] must be valid.", nameof(name));
 
             Name = name;
+            UpdatedAt = DateTime.Now;
+        }
+
+        public void UpdateDateOfBirth(DateTime dateOfBirth)
+        {
+            if (dateOfBirth > DateTime.Now.AddYears(80) || dateOfBirth < DateTime.Now.AddYears(14))
+                throw new ArgumentException("Parameter [dateOfBirth] must be valid.", nameof(dateOfBirth));
+
+            DateOfBirth = dateOfBirth;
             UpdatedAt = DateTime.Now;
         }
 

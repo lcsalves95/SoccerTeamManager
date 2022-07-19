@@ -28,6 +28,18 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 .WithOne(t => t.DestinationTeam)
                 .HasForeignKey(t => t.DestinationTeamId);
 
+            builder.HasMany(t => t.HomeMatches)
+                .WithOne(m => m.HomeTeam)
+                .HasForeignKey(m => m.HomeTeamId);
+
+            builder.HasMany(t => t.VisitorMatches)
+                .WithOne(m => m.VisitorTeam)
+                .HasForeignKey(m => m.VisitorTeamId);
+
+            builder.HasMany(t => t.Tournaments)
+                .WithMany(t => t.Teams)
+                .UsingEntity<TounamentTeam>();
+
             builder.ToTable("Team", "manager");
         }
     }

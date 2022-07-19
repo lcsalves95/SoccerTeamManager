@@ -4,14 +4,12 @@ namespace SoccerTeamManager.Domain.Entities
 {
     public class Country : Entity
     {
-        public string Name { get; private set; }
+        public string Name { get; private set; } = string.Empty;
 
-        public ICollection<Player> Players { get; set; }
+        public ICollection<Player>? Players { get; private set; }
 
         public Country()
         {
-            Name = string.Empty;
-            Players = new List<Player>();
         }
 
         public Country(string name)
