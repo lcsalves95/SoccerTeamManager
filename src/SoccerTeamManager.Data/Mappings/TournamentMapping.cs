@@ -17,6 +17,10 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 .WithMany(team => team.Tournaments)
                 .UsingEntity<TounamentTeam>();
 
+            builder.Navigation(t => t.Teams);
+            builder.Navigation(t => t.Matches);
+            builder.Navigation(t => t.TournamentTeams);
+
             builder.HasData(new Tournament("Amistoso", 0));
 
             builder.ToTable("Tournament", "manager");

@@ -23,6 +23,9 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 .WithMany(t => t.TournamentTeams)
                 .HasForeignKey(x => x.TeamId);
 
+            builder.Navigation(t => t.Team);
+            builder.Navigation(t => t.Tournament);
+
             builder.ToTable("TounamentTeam", "manager");
         }
     }

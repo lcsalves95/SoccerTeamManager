@@ -33,6 +33,9 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 .WithMany(c => c.Players)
                 .HasForeignKey(p => p.CountryId);
 
+            builder.Navigation(p => p.Country);
+            builder.Navigation(p => p.CurrentTeam);
+
             builder.ToTable("Player", "manager");
         }
     }

@@ -26,7 +26,7 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             return insertResult.Entity;
         }
 
-        public async Task<IEnumerable<Team>> Select(Guid? id, string? name, States? state)
+        public async Task<IEnumerable<Team>> Select(Guid? id = null, string? name = null, States? state = null)
         {
             var teams = await _context.Teams.Where(team =>
                     team.Id == (id ?? team.Id) &&

@@ -8,16 +8,18 @@ namespace SoccerTeamManager.Infra.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
-            builder.HasKey(p => p.Id);
+            builder.HasKey(c => c.Id);
 
-            builder.Property(p => p.Id).IsRequired();
-            builder.Property(p => p.Name).HasMaxLength(256).IsRequired();
-            builder.Ignore(p => p.CreatedAt);
-            builder.Ignore(p => p.UpdatedAt);
+            builder.Property(c => c.Id).IsRequired();
+            builder.Property(c => c.Name).HasMaxLength(256).IsRequired();
+            builder.Ignore(c => c.CreatedAt);
+            builder.Ignore(c => c.UpdatedAt);
 
             builder.HasMany(c => c.Players)
                 .WithOne(p => p.Country)
                 .HasForeignKey(p => p.CountryId);
+
+            builder.Navigation(c => c.Players);
 
             builder.HasData(
                 new Country("Afeganistão"),

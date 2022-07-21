@@ -10,7 +10,6 @@ namespace SoccerTeamManager.Infra.Data.Mappings
         {
             builder.HasKey(m => m.Id);
 
-
             builder.Property(me => me.MatchId).IsRequired();
             builder.Property(me => me.EventType).IsRequired();
             builder.Property(me => me.TeamId);
@@ -18,6 +17,8 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.HasOne(me => me.Match)
                 .WithMany(m => m.MatchEvents)
                 .HasForeignKey(me => me.MatchId);
+
+            builder.Navigation(me => me.Match);
 
             builder.ToTable("MatchEvent", "manager");
         }

@@ -40,6 +40,14 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 .WithMany(t => t.Teams)
                 .UsingEntity<TounamentTeam>();
 
+            builder.Navigation(t => t.VisitorMatches);
+            builder.Navigation(t => t.HomeMatches);
+            builder.Navigation(t => t.Players);
+            builder.Navigation(t => t.InTranfers);
+            builder.Navigation(t => t.OutTranfers);
+            builder.Navigation(t => t.Tournaments);
+            builder.Navigation(t => t.TournamentTeams);
+
             builder.ToTable("Team", "manager");
         }
     }

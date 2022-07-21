@@ -7,7 +7,7 @@ namespace SoccerTeamManager.Domain.Interfaces
     {
         void Delete(Team team);
         Task<Team> Insert(Team team);
-        Task<IEnumerable<Team>> Select(Guid? id, string? name, States? state);
+        Task<IEnumerable<Team>> Select(Guid? id = null, string? name = null , States? state = null);
         Team Update(Team team);
     }
 }

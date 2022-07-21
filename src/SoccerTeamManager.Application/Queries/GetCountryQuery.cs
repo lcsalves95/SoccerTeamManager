@@ -4,17 +4,15 @@ using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Application.Queries
 {
-    public class GetPlayerQuery : IQuery<RequestResult<Player>>
+    public class GetCountryQuery : IQuery<RequestResult<Country>>
     {
         public Guid? Id { get; private set; }
         public string? Name { get; private set; }
-        public long? CbfCode { get; private set; }
 
-        public GetPlayerQuery(Guid? id = null, string? name = null, long? cbfCode = null)
+        public GetCountryQuery(Guid? id = null, string? name = null)
         {
             Id = id;
             Name = name;
-            CbfCode = cbfCode;
         }
     }
 }
