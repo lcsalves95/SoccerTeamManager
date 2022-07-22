@@ -65,5 +65,14 @@ namespace SoccerTeamManager.Domain.Entities
             CurrentTeamId = teamId;
             UpdatedAt = DateTime.Now;
         }
+
+        public void UpdateCbfCode(long code)
+        {
+            if (code == default)
+                throw new ArgumentException("Parameter [cbfCode] must be valid.", nameof(code));
+
+            CbfCode = code;
+            UpdatedAt = DateTime.Now;
+        }
     }
 }

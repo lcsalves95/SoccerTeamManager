@@ -21,12 +21,16 @@ namespace SoccerTeamManager.Application.QueryHandlers
             try
             {
                 var players = await _repository.Select(request.Id, request.Name, null, null, request.CbfCode);
-                if (players.Any())
+                if (!players.Any())
+                    return new RequestResult<Player>(HttpStatusCode.NotFound, new Player(), Enumerable.Empty<ErrorModel>());
+
+                if (request.SingleData)
                 {
-                    var player = players.First();
-                    return new RequestResult<Player>(HttpStatusCode.Created, player, Enumerable.Empty<ErrorModel>());
+                    var player = players.FirstOrDefault();
+                    return new RequestResult<Player>(HttpStatusCode.OK, player, Enumerable.Empty<ErrorModel>());
                 }
-                return new RequestResult<Player>(HttpStatusCode.NotFound, new Player(), Enumerable.Empty<ErrorModel>());
+
+                return new RequestResult<Player>(HttpStatusCode.OK, players, Enumerable.Empty<ErrorModel>());
             }
             catch
             {

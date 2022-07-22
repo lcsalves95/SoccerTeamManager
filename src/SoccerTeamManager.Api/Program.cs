@@ -5,6 +5,7 @@ using SoccerTeamManager.Domain.Interfaces;
 using SoccerTeamManager.Infra.Data.Contexts;
 using SoccerTeamManager.Infra.Data.Repositories;
 using SoccerTeamManager.Infra.PipelineBehavior;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,8 @@ builder.Services.Scan(scan => scan.FromApplicationDependencies()
 builder.Services.AddValidatorsFromAssembly(typeof(SoccerTeamManager.Domain.AssemblyReference).Assembly);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

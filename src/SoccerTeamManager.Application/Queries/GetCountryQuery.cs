@@ -8,11 +8,13 @@ namespace SoccerTeamManager.Application.Queries
     {
         public Guid? Id { get; private set; }
         public string? Name { get; private set; }
+        public bool SingleData { get; private set; }
 
-        public GetCountryQuery(Guid? id = null, string? name = null)
+        public GetCountryQuery(Guid? id = null, string? name = null, bool singleData = false)
         {
             Id = id;
             Name = name;
+            SingleData = singleData;
         }
     }
 }

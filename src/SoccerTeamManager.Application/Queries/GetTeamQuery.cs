@@ -1,21 +1,22 @@
 ﻿using SoccerTeamManager.Domain.Entities;
+using SoccerTeamManager.Domain.Enums;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Application.Queries
 {
-    public class GetPlayerQuery : IQuery<RequestResult<Player>>
+    public class GetTeamQuery : IQuery<RequestResult<Team>>
     {
         public Guid? Id { get; private set; }
         public string? Name { get; private set; }
-        public long? CbfCode { get; private set; }
+        public States? Location { get; private set; }
         public bool SingleData { get; private set; }
 
-        public GetPlayerQuery(Guid? id = null, string? name = null, long? cbfCode = null, bool singleData = false)
+        public GetTeamQuery(Guid? id = null, string? name = null, States? location = null, bool singleData = false)
         {
             Id = id;
             Name = name;
-            CbfCode = cbfCode;
+            Location = location;
             SingleData = singleData;
         }
     }

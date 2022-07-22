@@ -5,20 +5,31 @@ using System.Net;
 
 namespace SoccerTeamManager.Api.Controllers.Rest
 {
-    public class BaseController<TResponse> : ControllerBase
-        where TResponse : Entity
+    public class BaseController : ControllerBase
     {
-        protected IActionResult GetCustomResponse(RequestResult<TResponse> requestResult, string? successInstance = null, string? failInstance = null)
+        protected IActionResult GetCustomResponseSingleData<TResponse>(RequestResult<TResponse> requestResult, string? successInstance = null, string? failInstance = null)
+            where TResponse : Entity
         {
             return requestResult.StatusCode switch
             {
                 HttpStatusCode.OK => Ok(requestResult.Data),
                 HttpStatusCode.Created => CreatedAtAction(successInstance ?? string.Empty, new { requestResult.Data.Id }, requestResult.Data),
                 HttpStatusCode.NoContent => NoContent(),
-                HttpStatusCode.BadRequest => BadRequest(BaseController<TResponse>.GetErrorResponse(failInstance, requestResult.Errors)),
+                HttpStatusCode.BadRequest => BadRequest(GetErrorResponse(failInstance, requestResult.Errors)),
                 HttpStatusCode.NotFound => NotFound(),
-                HttpStatusCode.PreconditionFailed => StatusCode(412, BaseController<TResponse>.GetErrorResponse(failInstance, requestResult.Errors)),
-                _ => StatusCode(500, BaseController<TResponse>.GetErrorResponse(failInstance, requestResult.Errors))
+                HttpStatusCode.PreconditionFailed => StatusCode(412, GetErrorResponse(failInstance, requestResult.Errors)),
+                _ => StatusCode(500, GetErrorResponse(failInstance, requestResult.Errors))
+            };
+        }
+
+        protected IActionResult GetCustomResponseMultipleData<TResponse>(RequestResult<TResponse> requestResult, string? failInstance = null)
+            where TResponse : Entity
+        {
+            return requestResult.StatusCode switch
+            {
+                HttpStatusCode.OK => Ok(requestResult.MultipleData),
+                HttpStatusCode.NotFound => NotFound(),
+                _ => StatusCode(500, GetErrorResponse(failInstance, requestResult.Errors))
             };
         }
 
