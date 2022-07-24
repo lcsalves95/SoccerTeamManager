@@ -34,7 +34,7 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             if (includes)
             {
                 tournaments.Include(x => x.Matches);
-                tournaments.Include(x => x.Teams);
+                tournaments.Include(x => x.TournamentTeams);
             }
             return await tournaments.ToListAsync();
         }
@@ -45,17 +45,12 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             return updateResult.Entity;
         }
 
-        public async Task<IEnumerable<TournamentTeam>> SelectTournamentTeams(Guid? tournamentId = null, Guid? teamId = null, bool includes = false)
+        public async Task<IEnumerable<TournamentTeam>> SelectTournamentTeams(Guid? tournamentId = null, Guid? teamId = null)
         {
             var tournamentTeams = _context.TournamentTeams.Where(tournamentTeam =>
                     tournamentTeam.TournamentId == (tournamentId ?? tournamentTeam.TournamentId) &&
                     tournamentTeam.TeamId == (teamId ?? tournamentTeam.TeamId)
                 );
-            if (includes)
-            {
-                tournamentTeams.Include(x => x.Tournament);
-                tournamentTeams.Include(x => x.Team);
-            }
             return await tournamentTeams.ToListAsync();
         }
 

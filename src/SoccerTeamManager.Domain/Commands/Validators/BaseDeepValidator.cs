@@ -41,6 +41,12 @@ namespace SoccerTeamManager.Domain.Commands.Validators
             return teams.Any();
         }
 
+        protected bool BeAValidPlayer(Guid playerId)
+        {
+            var player = _playerRepository.Select(id: playerId).Result;
+            return player.Any();
+        }
+
         protected bool BeAValidCountry(Guid countryId)
         {
             var countries = _countryRepository.Select(id: countryId).Result;
@@ -49,27 +55,22 @@ namespace SoccerTeamManager.Domain.Commands.Validators
 
         protected bool ParticipateOfTournament(InsertMatchCommand command)
         {
-            var tournament = _tournamentRepository.Select(id: command.TournamentId, includes: true).Result.FirstOrDefault();
-            var homeTeam = tournament?.TournamentTeams?.FirstOrDefault(x => x.TeamId == command.HomeTeamId);
-            var visitorTeam = tournament?.TournamentTeams?.FirstOrDefault(x => x.TeamId == command.VisitorTeamId);
+            var homeTeam = _tournamentRepository.SelectTournamentTeams(command.TournamentId, command.HomeTeamId).Result.FirstOrDefault();
+            var visitorTeam = _tournamentRepository.SelectTournamentTeams(command.TournamentId, command.HomeTeamId).Result.FirstOrDefault();
             return homeTeam != null && visitorTeam != null;
         }
 
         protected bool ParticipateOfTournament(UpdateMatchCommand command)
         {
-            var tournament = _tournamentRepository.Select(id: command.TournamentId, includes: true).Result.FirstOrDefault();
-            var homeTeam = tournament?.TournamentTeams?.FirstOrDefault(x => x.TeamId == command.HomeTeamId);
-            var visitorTeam = tournament?.TournamentTeams?.FirstOrDefault(x => x.TeamId == command.VisitorTeamId);
+            var homeTeam = _tournamentRepository.SelectTournamentTeams(command.TournamentId, command.HomeTeamId).Result.FirstOrDefault();
+            var visitorTeam = _tournamentRepository.SelectTournamentTeams(command.TournamentId, command.HomeTeamId).Result.FirstOrDefault();
             return homeTeam != null && visitorTeam != null;
         }
 
         protected bool NotBeOnTournament(InsertTournamentTeamCommand command)
         {
-            var tournament = _tournamentRepository.Select(id: command.TournamentId, includes: true).Result.FirstOrDefault();
-            if (tournament == null)
-                return false;
-            return tournament.TournamentTeams.Any(x => x.TeamId == command.TeamId);
-
+            var tournamentTeams = _tournamentRepository.SelectTournamentTeams(tournamentId: command.TournamentId).Result;
+            return !tournamentTeams.Any(x => x.TeamId == command.TeamId);
         }
     }
 }

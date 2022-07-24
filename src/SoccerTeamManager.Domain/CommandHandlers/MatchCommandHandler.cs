@@ -50,11 +50,7 @@ namespace SoccerTeamManager.Domain.CommandHandlers
         {
             try
             {
-                var tournament = (await _tournamentRepository.Select(id: request.TournamentId, includes: true)).FirstOrDefault();
-                if (tournament == null)
-                    return new RequestResult<Match>(HttpStatusCode.NotFound, new Match(), _errors);
-
-                var match = tournament.Matches?.FirstOrDefault(x => x.Id == request.Id);
+                var match = (await _matchRepository.Select(id: request.Id, tournamentId: request.TournamentId)).FirstOrDefault();
                 if (match == null)
                     return new RequestResult<Match>(HttpStatusCode.NotFound, new Match(), _errors);
 
@@ -64,7 +60,7 @@ namespace SoccerTeamManager.Domain.CommandHandlers
 
                 match = _matchRepository.Update(match);
                 await _uow.Commit();
-                return new RequestResult<Match>(HttpStatusCode.OK, tournament, _errors);
+                return new RequestResult<Match>(HttpStatusCode.OK, match, _errors);
             }
             catch (Exception)
             {
@@ -77,17 +73,13 @@ namespace SoccerTeamManager.Domain.CommandHandlers
         {
             try
             {
-                var tournament = (await _tournamentRepository.Select(id: request.TournamentId, includes: true)).FirstOrDefault();
-                if (tournament == null)
-                    return new RequestResult<Match>(HttpStatusCode.NotFound, new Match(), _errors);
-
-                var match = tournament.Matches?.FirstOrDefault(x => x.Id == request.Id);
+                var match = (await _matchRepository.Select(id: request.Id, tournamentId: request.TournamentId)).FirstOrDefault();
                 if (match == null)
                     return new RequestResult<Match>(HttpStatusCode.NotFound, new Match(), _errors);
 
                 _matchRepository.Delete(match);
                 await _uow.Commit();
-                return new RequestResult<Match>(HttpStatusCode.Created, tournament, _errors);
+                return new RequestResult<Match>(HttpStatusCode.NoContent, match, _errors);
             }
             catch (Exception)
             {
@@ -100,11 +92,7 @@ namespace SoccerTeamManager.Domain.CommandHandlers
         {
             try
             {
-                var tournament = (await _tournamentRepository.Select(id: request.TournamentId, includes: true)).FirstOrDefault();
-                if (tournament == null)
-                    return new RequestResult<MatchEvent>(HttpStatusCode.NotFound, new MatchEvent(), _errors);
-
-                var match = tournament.Matches?.FirstOrDefault(x => x.Id == request.MatchId);
+                var match = (await _matchRepository.Select(id: request.MatchId, tournamentId: request.TournamentId)).FirstOrDefault();
                 if (match == null)
                     return new RequestResult<MatchEvent>(HttpStatusCode.NotFound, new MatchEvent(), _errors);
 
@@ -112,7 +100,7 @@ namespace SoccerTeamManager.Domain.CommandHandlers
                 matchEvent = await _matchRepository.InsertEvent(matchEvent);
                 await _uow.Commit();
 
-                return new RequestResult<MatchEvent>(HttpStatusCode.OK, tournament, _errors);
+                return new RequestResult<MatchEvent>(HttpStatusCode.Created, matchEvent, _errors);
             }
             catch (Exception)
             {

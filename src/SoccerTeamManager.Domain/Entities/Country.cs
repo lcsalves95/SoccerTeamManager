@@ -10,8 +10,9 @@ namespace SoccerTeamManager.Domain.Entities
         {
         }
 
-        public Country(string name)
+        public Country(Guid id, string name)
         {
+            Id = id;
             Name = name;
         }
     }

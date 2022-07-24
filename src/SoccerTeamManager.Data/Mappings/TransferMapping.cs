@@ -22,17 +22,17 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.HasOne(t => t.Player)
                 .WithMany()
                 .HasForeignKey(t => t.PlayerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.OriginTeam)
                 .WithMany()
                 .HasForeignKey(t => t.OriginTeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.DestinationTeam)
                 .WithMany()
                 .HasForeignKey(t => t.DestinationTeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("Transfer", "manager");
         }

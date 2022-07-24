@@ -32,17 +32,17 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 .HasForeignKey(t => t.DestinationTeamId);
 
             builder.HasMany<Match>()
-                .WithOne()
+                .WithOne(x => x.HomeTeam)
                 .HasForeignKey(m => m.HomeTeamId);
 
             builder.HasMany<Match>()
-                .WithOne()
+                .WithOne(x => x.VisitorTeam)
                 .HasForeignKey(m => m.VisitorTeamId);
 
             builder.HasMany(t => t.TournamentTeams)
-                .WithOne(x => x.Team)
+                .WithOne()
                 .HasForeignKey(x => x.TeamId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("Team", "manager");
         }

@@ -70,7 +70,7 @@ namespace SoccerTeamManager.Domain.CommandHandlers
                     return new RequestResult<Tournament>(HttpStatusCode.NotFound, new Tournament(), _errors);
                 _repository.Delete(tournament);
                 await _uow.Commit();
-                return new RequestResult<Tournament>(HttpStatusCode.NoContent, new Tournament(), _errors);
+                return new RequestResult<Tournament>(HttpStatusCode.NoContent, tournament, _errors);
             }
             catch (Exception)
             {
@@ -91,7 +91,7 @@ namespace SoccerTeamManager.Domain.CommandHandlers
 
                 tournamentTeam = await _repository.InsertTeam(tournamentTeam);
                 await _uow.Commit();
-                return new RequestResult<TournamentTeam>(HttpStatusCode.OK, tournamentTeam, Enumerable.Empty<ErrorModel>());
+                return new RequestResult<TournamentTeam>(HttpStatusCode.Created, tournamentTeam, Enumerable.Empty<ErrorModel>());
             }
             catch (Exception)
             {

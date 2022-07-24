@@ -9,6 +9,6 @@ namespace SoccerTeamManager.Domain.Interfaces
         Task<IEnumerable<Tournament>> Select(Guid? id = null, string? name = null, bool includes = false);
         Tournament Update(Tournament tournament);
         Task<TournamentTeam> InsertTeam(TournamentTeam tournamentTeam);
-        Task<IEnumerable<TournamentTeam>> SelectTournamentTeams(Guid? tournamentId = null, Guid? teamId = null, bool includes = false);
+        Task<IEnumerable<TournamentTeam>> SelectTournamentTeams(Guid? tournamentId = null, Guid? teamId = null);
     }
 }

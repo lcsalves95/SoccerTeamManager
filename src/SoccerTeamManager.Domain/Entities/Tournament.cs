@@ -20,8 +20,13 @@ namespace SoccerTeamManager.Domain.Entities
         {
             Name = name;
             Prize = prize;
-            Matches = new List<Match>();
-            TournamentTeams = new List<TournamentTeam>();
+        }
+
+        public Tournament(Guid id, string name, double prize)
+        {
+            Id = id;
+            Name = name;
+            Prize = prize;
         }
 
         public void UpdateName(string name)

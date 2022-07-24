@@ -21,11 +21,13 @@ namespace SoccerTeamManager.Infra.Data.Mappings
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(t => t.TournamentTeams)
-                .WithOne(x => x.Tournament)
+                .WithOne()
                 .HasForeignKey(x => x.TournamentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasData(new Tournament("Amistoso", 0));
+            builder.Navigation(x => x.Matches);
+
+            builder.HasData(new Tournament(new Guid("bbaedea6-04f8-4343-a832-314482933a1b"), "Amistoso", 0));
 
             builder.ToTable("Tournament", "manager");
         }

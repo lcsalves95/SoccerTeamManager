@@ -17,12 +17,6 @@ namespace SoccerTeamManager.Infra.Data.Mappings
 
             builder.Ignore(tt => tt.UpdatedAt);
 
-            builder.HasOne<Tournament>()
-                .WithMany(t => t.TournamentTeams);
-
-            builder.HasOne<Team>()
-                .WithMany(t => t.TournamentTeams);
-
             builder.ToTable("TounamentTeam", "manager");
         }
     }

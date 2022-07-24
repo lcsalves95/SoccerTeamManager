@@ -20,7 +20,7 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             return insertResult.Entity;
         }
 
-        public async Task<IEnumerable<Transfer>> Select(Guid? id, Guid? originalTeam, Guid? destinationTeam, bool includes = false)
+        public async Task<IEnumerable<Transfer>> Select(Guid? id = null, Guid? playerId = null, Guid? originalTeam = null, Guid? destinationTeam = null, bool includes = false)
         {
             var transfers = _context.Transfers.Where(tranfer =>
                     tranfer.Id == (id ?? tranfer.Id) &&

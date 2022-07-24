@@ -9,9 +9,9 @@ namespace SoccerTeamManager.Application.QueryHandlers
 {
     public class MatchQueryHandler : IRequestHandler<GetMatchQuery, RequestResult<Match>>
     {
-        private readonly ITournamentRepository _repository;
+        private readonly IMatchRepository _repository;
 
-        public MatchQueryHandler(ITournamentRepository repository)
+        public MatchQueryHandler(IMatchRepository repository)
         {
             _repository = repository;
         }
@@ -20,19 +20,19 @@ namespace SoccerTeamManager.Application.QueryHandlers
         {
             try
             {
-                var tournament = (await _repository.Select(id: request.TournamentId, includes: true)).FirstOrDefault();
-                if (tournament == null)
+                var matches = (await _repository.Select(tournamentId: request.TournamentId, includes: true));
+                if (matches == null)
                     return new RequestResult<Match>(HttpStatusCode.NotFound, new Match(), Enumerable.Empty<ErrorModel>());
 
                 if (request.SingleData)
                 {
-                    var match = tournament?.Matches?.FirstOrDefault(x => x.Id == request.MatchId);
+                    var match = matches.FirstOrDefault(x => x.Id == request.MatchId);
                     if (match == null)
                         return new RequestResult<Match>(HttpStatusCode.NotFound, new Match(), Enumerable.Empty<ErrorModel>());
                     return new RequestResult<Match>(HttpStatusCode.OK, match, Enumerable.Empty<ErrorModel>());
                 }
 
-                return new RequestResult<Match>(HttpStatusCode.OK, tournament?.Matches, Enumerable.Empty<ErrorModel>());
+                return new RequestResult<Match>(HttpStatusCode.OK, matches, Enumerable.Empty<ErrorModel>());
             }
             catch
             {

@@ -18,13 +18,13 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.Property(m => m.UpdatedAt);
 
             builder.HasOne<Tournament>()
-                .WithMany()
+                .WithMany(x => x.Matches)
                 .HasForeignKey(m => m.TournamentId);
 
             builder.HasOne(m => m.HomeTeam)
                 .WithMany()
                 .HasForeignKey(m => m.HomeTeamId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(m => m.VisitorTeam)
                 .WithMany()

@@ -6,6 +6,6 @@ namespace SoccerTeamManager.Domain.Interfaces
     {
         Task<Transfer> Insert(Transfer transfer);
         Transfer Update(Transfer transfer);
-        Task<IEnumerable<Transfer>> Select(Guid? id, Guid? originalTeam, Guid? destinationTeam, bool includes = false);
+        Task<IEnumerable<Transfer>> Select(Guid? id = null, Guid? playerId = null, Guid? originalTeam = null, Guid? destinationTeam = null, bool includes = false);
     }
 }
