@@ -9,7 +9,7 @@ namespace SoccerTeamManager.Infra.PipelineBehavior
         where TRequest : class, ICommand<TResponse>
         where TResponse : class
     {
-        public DeepValidationBehavior(IEnumerable<IShallowValidator<TRequest>> validators) : base(validators, HttpStatusCode.PreconditionFailed)
+        public DeepValidationBehavior(IEnumerable<IDeepValidator<TRequest>> validators) : base(validators, HttpStatusCode.PreconditionFailed)
         {
         }
     }

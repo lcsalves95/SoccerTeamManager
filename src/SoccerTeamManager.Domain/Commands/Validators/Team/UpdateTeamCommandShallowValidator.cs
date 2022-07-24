@@ -3,10 +3,15 @@ using SoccerTeamManager.Infra.PipelineBehavior;
 
 namespace SoccerTeamManager.Domain.Commands.Validators
 {
-    public class InsertTeamCommandShallowValidator : BaseShallowValidator<InsertTeamCommand>, IShallowValidator<InsertTeamCommand>
+    public class UpdateTeamCommandShallowValidator : BaseShallowValidator<UpdateTeamCommand>, IShallowValidator<UpdateTeamCommand>
     {
-        public InsertTeamCommandShallowValidator()
+        public UpdateTeamCommandShallowValidator()
         {
+            RuleFor(x => x.Id)
+                .NotEmpty()
+                .WithErrorCode("InvalidId")
+                .WithMessage("O ID deve ser informado");
+
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithErrorCode("InvalidName")

@@ -17,7 +17,7 @@ namespace SoccerTeamManager.Infra.Data.Repositories
 
         public void Delete(Team team)
         {
-            _context.Entry(team);
+            _context.Remove(team);
         }
 
         public async Task<Team> Insert(Team team)
@@ -26,14 +26,18 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             return insertResult.Entity;
         }
 
-        public async Task<IEnumerable<Team>> Select(Guid? id = null, string? name = null, States? state = null)
+        public async Task<IEnumerable<Team>> Select(Guid? id = null, string? name = null, string? cnpj = null, States? state = null, bool includes = false)
         {
-            var teams = await _context.Teams.Where(team =>
+            var teams = _context.Teams.Where(team =>
                     team.Id == (id ?? team.Id) &&
                     team.Name == (name ?? team.Name) &&
-                    team.Location == (state ?? team.Location)
-                ).ToListAsync();
-            return teams;
+                    team.Cnpj == (cnpj ?? team.Cnpj) &&
+                    team.Location == (state ?? team.Location));
+
+            if (includes)
+                teams.Include(x => x.Players);
+
+            return await teams.ToListAsync();
         }
 
         public Team Update(Team team)

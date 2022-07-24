@@ -41,7 +41,6 @@ namespace SoccerTeamManager.Infra.PipelineBehavior
 
                 var responseObj = Activator.CreateInstance(invalidResponseType,
                                                            _statusCode,
-                                                           null,
                                                            validationFailures) as TResponse;
                 return responseObj;
             }

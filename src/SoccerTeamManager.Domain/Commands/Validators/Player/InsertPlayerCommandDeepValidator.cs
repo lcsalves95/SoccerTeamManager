@@ -8,12 +8,13 @@ namespace SoccerTeamManager.Domain.Commands.Validators
     {
         public InsertPlayerCommandDeepValidator(IPlayerRepository playerRepository,
                                                 ITeamRepository teamRepository,
-                                                ICountryRepository countryRepository) : base(playerRepository, teamRepository, countryRepository)
+                                                ICountryRepository countryRepository,
+                                                ITournamentRepository tournamentRepository) : base(playerRepository, teamRepository, countryRepository, tournamentRepository)
         {
-            RuleFor(x => x.CbfCode)
+            RuleFor(x => x.Cpf)
                 .Must(BeANonExistentPlayer)
-                .WithMessage("Já existe um jogador cadastrado com este código CBF")
-                .WithErrorCode("DuplicatedCbfCode");
+                .WithMessage("O CPF informado já está em uso")
+                .WithErrorCode("InvalidDocument");
 
             When(x => x.TeamId != null, () =>
             {

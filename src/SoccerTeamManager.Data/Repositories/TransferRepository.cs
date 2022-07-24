@@ -20,14 +20,21 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             return insertResult.Entity;
         }
 
-        public async Task<IEnumerable<Transfer>> Select(Guid? id, Guid? originalTeam, Guid? destinationTeam)
+        public async Task<IEnumerable<Transfer>> Select(Guid? id, Guid? originalTeam, Guid? destinationTeam, bool includes = false)
         {
-            var transfers = await _context.Transfers.Where(tranfer =>
+            var transfers = _context.Transfers.Where(tranfer =>
                     tranfer.Id == (id ?? tranfer.Id) &&
                     tranfer.OriginTeamId == (originalTeam ?? tranfer.OriginTeamId) &&
-                    tranfer.DestinationTeamId == (destinationTeam ?? tranfer.DestinationTeamId)
-                ).ToListAsync();
-            return transfers;
+                    tranfer.DestinationTeamId == (destinationTeam ?? tranfer.DestinationTeamId));
+
+            if (includes)
+            {
+                transfers.Include(x => x.OriginTeam);
+                transfers.Include(x => x.DestinationTeam);
+                transfers.Include(x => x.Player);
+            }
+
+            return await transfers.ToListAsync();
         }
 
         public Transfer Update(Transfer transfer)

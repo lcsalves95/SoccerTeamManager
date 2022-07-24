@@ -8,24 +8,21 @@ namespace SoccerTeamManager.Domain.Entities
     public class Team : Entity
     {
         public string Name { get; private set; } = string.Empty;
+        public string Cnpj { get; private set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public States Location { get; private set; }
 
         public ICollection<Player>? Players { get; private set; }
-        public ICollection<Transfer>? OutTranfers { get; private set; }
-        public ICollection<Transfer>? InTranfers { get; private set; }
-        public ICollection<Tournament>? Tournaments { get; private set; }
-        public ICollection<Match>? HomeMatches { get; private set; }
-        public ICollection<Match>? VisitorMatches { get; private set; }
-        public ICollection<TounamentTeam>? TournamentTeams { get; private set; }
+        public ICollection<TournamentTeam>? TournamentTeams { get; private set; }
 
         public Team()
         {
         }
 
-        public Team(string name, States location)
+        public Team(string name, string cnpj, States location)
         {
             Name = name;
+            Cnpj = cnpj;
             Location = location;
         }
 

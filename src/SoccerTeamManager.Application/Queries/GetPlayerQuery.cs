@@ -8,14 +8,14 @@ namespace SoccerTeamManager.Application.Queries
     {
         public Guid? Id { get; private set; }
         public string? Name { get; private set; }
-        public long? CbfCode { get; private set; }
+        public string? Cpf { get; private set; }
         public bool SingleData { get; private set; }
 
-        public GetPlayerQuery(Guid? id = null, string? name = null, long? cbfCode = null, bool singleData = false)
+        public GetPlayerQuery(Guid? id = null, string? name = null, string? cpf = null, bool singleData = false)
         {
             Id = id;
             Name = name;
-            CbfCode = cbfCode;
+            Cpf = cpf;
             SingleData = singleData;
         }
     }

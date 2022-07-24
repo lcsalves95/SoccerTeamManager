@@ -12,41 +12,37 @@ namespace SoccerTeamManager.Infra.Data.Mappings
 
             builder.Property(t => t.Id).IsRequired();
             builder.Property(t => t.Name).HasMaxLength(256).IsRequired();
+            builder.Property(t => t.Cnpj).HasMaxLength(14).IsRequired();
             builder.Property(t => t.Location).IsRequired();
             builder.Property(t => t.CreatedAt).IsRequired();
             builder.Property(t => t.UpdatedAt);
 
+            builder.HasIndex(x => x.Cnpj).IsUnique();
+
             builder.HasMany(t => t.Players)
-                .WithOne(x => x.CurrentTeam)
+                .WithOne()
                 .HasForeignKey(x => x.CurrentTeamId);
 
-            builder.HasMany(p => p.OutTranfers)
-                .WithOne(t => t.OriginTeam)
+            builder.HasMany<Transfer>()
+                .WithOne()
                 .HasForeignKey(t => t.OriginTeamId);
 
-            builder.HasMany(p => p.InTranfers)
-                .WithOne(t => t.DestinationTeam)
+            builder.HasMany<Transfer>()
+                .WithOne()
                 .HasForeignKey(t => t.DestinationTeamId);
 
-            builder.HasMany(t => t.HomeMatches)
-                .WithOne(m => m.HomeTeam)
+            builder.HasMany<Match>()
+                .WithOne()
                 .HasForeignKey(m => m.HomeTeamId);
 
-            builder.HasMany(t => t.VisitorMatches)
-                .WithOne(m => m.VisitorTeam)
+            builder.HasMany<Match>()
+                .WithOne()
                 .HasForeignKey(m => m.VisitorTeamId);
 
-            builder.HasMany(t => t.Tournaments)
-                .WithMany(t => t.Teams)
-                .UsingEntity<TounamentTeam>();
-
-            builder.Navigation(t => t.VisitorMatches);
-            builder.Navigation(t => t.HomeMatches);
-            builder.Navigation(t => t.Players);
-            builder.Navigation(t => t.InTranfers);
-            builder.Navigation(t => t.OutTranfers);
-            builder.Navigation(t => t.Tournaments);
-            builder.Navigation(t => t.TournamentTeams);
+            builder.HasMany(t => t.TournamentTeams)
+                .WithOne(x => x.Team)
+                .HasForeignKey(x => x.TeamId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.ToTable("Team", "manager");
         }

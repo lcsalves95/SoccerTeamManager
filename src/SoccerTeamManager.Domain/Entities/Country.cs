@@ -6,8 +6,6 @@ namespace SoccerTeamManager.Domain.Entities
     {
         public string Name { get; private set; } = string.Empty;
 
-        public ICollection<Player>? Players { get; private set; }
-
         public Country()
         {
         }

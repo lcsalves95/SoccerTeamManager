@@ -8,13 +8,9 @@ namespace SoccerTeamManager.Domain.Commands.Validators
     {
         public UpdatePlayerCommandDeepValidator(IPlayerRepository playerRepository,
                                                 ITeamRepository teamRepository,
-                                                ICountryRepository countryRepository) : base(playerRepository, teamRepository, countryRepository)
+                                                ICountryRepository countryRepository,
+                                                ITournamentRepository tournamentRepository) : base(playerRepository, teamRepository, countryRepository, tournamentRepository)
         {
-            RuleFor(player => player)
-                .Must(BeAValidCbfCode)
-                .WithMessage("Já existe um jogador cadastrado com este código CBF")
-                .WithErrorCode("DuplicatedCbfCode");
-
             RuleFor(x => x.CountryId)
                 .Must(BeAValidCountry)
                 .WithMessage("País não cadastrado")

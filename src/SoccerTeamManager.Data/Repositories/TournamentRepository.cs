@@ -25,19 +25,44 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             return insertResult.Entity;
         }
 
-        public async Task<IEnumerable<Tournament>> Select(Guid? id = null, string? name = null)
+        public async Task<IEnumerable<Tournament>> Select(Guid? id = null, string? name = null, bool includes = false)
         {
-            var tournaments = await _context.Tournaments.Where(tournament =>
+            var tournaments = _context.Tournaments.Where(tournament =>
                     tournament.Id == (id ?? tournament.Id) &&
                     tournament.Name == (name ?? tournament.Name)
-                ).ToListAsync();
-            return tournaments;
+                );
+            if (includes)
+            {
+                tournaments.Include(x => x.Matches);
+                tournaments.Include(x => x.Teams);
+            }
+            return await tournaments.ToListAsync();
         }
 
         public Tournament Update(Tournament tournament)
         {
             var updateResult = _context.Tournaments.Update(tournament);
             return updateResult.Entity;
+        }
+
+        public async Task<IEnumerable<TournamentTeam>> SelectTournamentTeams(Guid? tournamentId = null, Guid? teamId = null, bool includes = false)
+        {
+            var tournamentTeams = _context.TournamentTeams.Where(tournamentTeam =>
+                    tournamentTeam.TournamentId == (tournamentId ?? tournamentTeam.TournamentId) &&
+                    tournamentTeam.TeamId == (teamId ?? tournamentTeam.TeamId)
+                );
+            if (includes)
+            {
+                tournamentTeams.Include(x => x.Tournament);
+                tournamentTeams.Include(x => x.Team);
+            }
+            return await tournamentTeams.ToListAsync();
+        }
+
+        public async Task<TournamentTeam> InsertTeam(TournamentTeam tournamentTeam)
+        {
+            var insertResult = await _context.TournamentTeams.AddAsync(tournamentTeam);
+            return insertResult.Entity;
         }
     }
 }

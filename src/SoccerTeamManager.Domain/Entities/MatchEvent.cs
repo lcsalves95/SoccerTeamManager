@@ -10,7 +10,10 @@ namespace SoccerTeamManager.Domain.Entities
         public DateTime TimeOfOccurrence { get; private set; }
         public Guid? TeamId { get; private set; }
 
-        public Match? Match { get; private set; }
+        public MatchEvent()
+        {
+
+        }
 
         public MatchEvent(Guid matchId, MatchEventType eventType, Guid? teamId, DateTime timeOfOccurrence)
         {

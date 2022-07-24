@@ -20,20 +20,19 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.Ignore(t => t.UpdatedAt);
 
             builder.HasOne(t => t.Player)
-                .WithMany(p => p.Tranfers)
-                .HasForeignKey(t => t.PlayerId);
+                .WithMany()
+                .HasForeignKey(t => t.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(t => t.OriginTeam)
-                .WithMany(t => t.OutTranfers)
-                .HasForeignKey(t => t.OriginTeamId);
+                .WithMany()
+                .HasForeignKey(t => t.OriginTeamId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(t => t.DestinationTeam)
-                .WithMany(t => t.InTranfers)
-                .HasForeignKey(t => t.DestinationTeamId);
-
-            builder.Navigation(t => t.Player);
-            builder.Navigation(t => t.OriginTeam);
-            builder.Navigation(t => t.DestinationTeam);
+                .WithMany()
+                .HasForeignKey(t => t.DestinationTeamId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Transfer", "manager");
         }

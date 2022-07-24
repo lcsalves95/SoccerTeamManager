@@ -17,10 +17,10 @@ namespace SoccerTeamManager.Domain.Commands.Validators
                 .WithMessage("O nome deve conter ao menos um sobrenome")
                 .WithErrorCode("InvalidName");
 
-            RuleFor(x => x.CbfCode)
-                .NotEmpty()
-                .WithMessage("O código CPF deve ser informado")
-                .WithErrorCode("InvalidName");
+            RuleFor(x => x.Cpf)
+                .Must(BeAValidCpf)
+                .WithMessage("Documento inválido")
+                .WithErrorCode("InvalidCpf");
 
             RuleFor(x => x.CountryId)
                 .NotEmpty()

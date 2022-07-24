@@ -17,6 +17,13 @@ namespace SoccerTeamManager.Api.Controllers.Rest
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var requestResult = await _mediator.Send(new GetPlayerQuery());
+            return GetCustomResponseMultipleData(requestResult, failInstance: HttpContext.Request.Path.Value);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -25,17 +32,17 @@ namespace SoccerTeamManager.Api.Controllers.Rest
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert(PlayerViewModel model)
+        public async Task<IActionResult> Insert(InsertPlayerViewModel model)
         {
-            var command = new InsertPlayerCommand(model.Name, model.DateOfBirth, model.CountryId, model.CbfCode, model.TeamId);
+            var command = new InsertPlayerCommand(model.Name, model.DateOfBirth, model.CountryId, model.Cpf, model.TeamId);
             var requestResult = await _mediator.Send(command);
             return GetCustomResponseSingleData(requestResult, nameof(GetById), HttpContext.Request.Path.Value);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, PlayerViewModel model)
+        public async Task<IActionResult> Update(Guid id, InsertPlayerViewModel model)
         {
-            var command = new UpdatePlayerCommand(id, model.Name, model.DateOfBirth, model.CountryId, model.CbfCode, model.TeamId);
+            var command = new UpdatePlayerCommand(id, model.Name, model.DateOfBirth, model.CountryId, model.TeamId);
             var requestResult = await _mediator.Send(command);
             return GetCustomResponseSingleData(requestResult, failInstance: HttpContext.Request.Path.Value);
         }

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using SoccerTeamManager.Domain.ValueObjects;
 
 namespace SoccerTeamManager.Domain.Commands.Validators
 {
@@ -23,7 +24,22 @@ namespace SoccerTeamManager.Domain.Commands.Validators
 
         protected bool BeAValidDateOfBirth(DateTime dateOfBirth)
         {
-            return dateOfBirth >= DateTime.Now.AddYears(-14) && dateOfBirth <= DateTime.Now.AddYears(-100);
+            return dateOfBirth <= DateTime.Now.AddYears(-14) && dateOfBirth >= DateTime.Now.AddYears(-100);
+        }
+
+        protected bool BeAValidDate(DateTime date)
+        {
+            return date >= DateTime.Now;
+        }
+
+        protected bool BeAValidCpf(string cpf)
+        {
+            return CpfVo.IsValid(cpf);
+        }
+
+        protected bool BeAValidCnpj(string cnpj)
+        {
+            return CnpjVo.IsValid(cnpj);
         }
     }
 }

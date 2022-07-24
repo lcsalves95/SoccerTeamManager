@@ -1,19 +1,18 @@
 ﻿using SoccerTeamManager.Domain.Entities;
-using SoccerTeamManager.Domain.Enums;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Domain.Commands
 {
-    public class InsertTeamCommand : ICommand<RequestResult<Team>>
+    public class InsertTournamentCommand : ICommand<RequestResult<Tournament>>
     {
         public string Name { get; private set; }
-        public States Location { get; private set; }
+        public double Prize { get; private set; }
 
-        public InsertTeamCommand(string name, States location)
+        public InsertTournamentCommand(string name, double prize)
         {
             Name = name;
-            Location = location;
+            Prize = prize;
         }
     }
 }

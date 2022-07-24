@@ -9,6 +9,7 @@ namespace SoccerTeamManager.Infra.Data.Contexts
         public DbSet<Team> Teams { get; set; }
         public DbSet<Transfer> Transfers { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
+        public DbSet<TournamentTeam> TournamentTeams { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Country> Countries { get; set; }
 

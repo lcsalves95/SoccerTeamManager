@@ -25,5 +25,13 @@ namespace SoccerTeamManager.Infra.Responses
             Errors = errors;
             MultipleData = multipleData;
         }
+
+        public RequestResult(HttpStatusCode statusCode, IEnumerable<ErrorModel> errors)
+        {
+            StatusCode = statusCode;
+            Data = null;
+            Errors = errors;
+            MultipleData = null;
+        }
     }
 }

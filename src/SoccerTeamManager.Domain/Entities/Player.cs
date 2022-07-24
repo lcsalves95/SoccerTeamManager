@@ -8,26 +8,22 @@ namespace SoccerTeamManager.Domain.Entities
         public DateTime DateOfBirth { get; private set; }
         public Guid CountryId { get; private set; }
         public Guid? CurrentTeamId { get; private set; }
-        public long CbfCode { get; private set; }
+        public string Cpf { get; private set; } = string.Empty;
 
         public Country? Country { get; private set; }
-        public Team? CurrentTeam { get; private set; }
-        public ICollection<Transfer>? Tranfers { get; private set; }
 
         public Player()
         {
             Country = new Country();
-            CurrentTeam = new Team();
-            Tranfers = new List<Transfer>();
         }
 
-        public Player(string name, DateTime dateOfBirth, Guid countryId, Guid? currentTeamId, long cbfCode)
+        public Player(string name, DateTime dateOfBirth, Guid countryId, Guid? currentTeamId, string cpf)
         {
             Name = name;
             DateOfBirth = dateOfBirth;
             CountryId = countryId;
             CurrentTeamId = currentTeamId;
-            CbfCode = cbfCode;
+            Cpf = cpf;
         }
 
         public void UpdateName(string name)
@@ -41,7 +37,7 @@ namespace SoccerTeamManager.Domain.Entities
 
         public void UpdateDateOfBirth(DateTime dateOfBirth)
         {
-            if (dateOfBirth > DateTime.Now.AddYears(80) || dateOfBirth < DateTime.Now.AddYears(14))
+            if (dateOfBirth > DateTime.Now.AddYears(-14) || dateOfBirth < DateTime.Now.AddYears(-100))
                 throw new ArgumentException("Parameter [dateOfBirth] must be valid.", nameof(dateOfBirth));
 
             DateOfBirth = dateOfBirth;
@@ -63,15 +59,6 @@ namespace SoccerTeamManager.Domain.Entities
                 throw new ArgumentException("Parameter [teamId] must be valid.", nameof(teamId));
 
             CurrentTeamId = teamId;
-            UpdatedAt = DateTime.Now;
-        }
-
-        public void UpdateCbfCode(long code)
-        {
-            if (code == default)
-                throw new ArgumentException("Parameter [cbfCode] must be valid.", nameof(code));
-
-            CbfCode = code;
             UpdatedAt = DateTime.Now;
         }
     }

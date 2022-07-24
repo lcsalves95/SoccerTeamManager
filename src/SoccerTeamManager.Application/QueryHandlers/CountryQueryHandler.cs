@@ -20,17 +20,17 @@ namespace SoccerTeamManager.Application.QueryHandlers
         {
             try
             {
-                var countries = await _repository.Select(request.Id, request.Name);
-                if (!countries.Any())
-                    return new RequestResult<Country>(HttpStatusCode.NotFound, new Country(), Enumerable.Empty<ErrorModel>());
+                var countries = (await _repository.Select(request.Id, request.Name)).OrderBy(x => x.Name);
 
                 if (request.SingleData)
                 {
                     var country = countries.FirstOrDefault();
-                    return new RequestResult<Country>(HttpStatusCode.Created, country, Enumerable.Empty<ErrorModel>());
+                    if (country == null)
+                        return new RequestResult<Country>(HttpStatusCode.NotFound, new Country(), Enumerable.Empty<ErrorModel>());
+                    return new RequestResult<Country>(HttpStatusCode.OK, country, Enumerable.Empty<ErrorModel>());
                 }
 
-                return new RequestResult<Country>(HttpStatusCode.Created, countries, Enumerable.Empty<ErrorModel>());
+                return new RequestResult<Country>(HttpStatusCode.OK, countries, Enumerable.Empty<ErrorModel>());
             }
             catch
             {

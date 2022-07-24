@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SoccerTeamManager.Domain.Interfaces;
+using SoccerTeamManager.Infra.Data;
 using SoccerTeamManager.Infra.Data.Contexts;
 using SoccerTeamManager.Infra.Data.Repositories;
 using SoccerTeamManager.Infra.PipelineBehavior;
@@ -17,6 +18,8 @@ builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddMediatR(typeof(SoccerTeamManager.Application.AssemblyReference).Assembly);
 builder.Services.AddMediatR(typeof(SoccerTeamManager.Domain.AssemblyReference).Assembly);

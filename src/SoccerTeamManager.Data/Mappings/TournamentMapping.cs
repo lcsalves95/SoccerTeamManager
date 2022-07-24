@@ -12,14 +12,18 @@ namespace SoccerTeamManager.Infra.Data.Mappings
 
             builder.Property(t => t.Name).HasMaxLength(256).IsRequired();
             builder.Property(t => t.Prize).IsRequired();
+            builder.Property(t => t.CreatedAt).IsRequired();
+            builder.Property(t => t.UpdatedAt);
 
-            builder.HasMany(t => t.Teams)
-                .WithMany(team => team.Tournaments)
-                .UsingEntity<TounamentTeam>();
+            builder.HasMany(t => t.Matches)
+                .WithOne()
+                .HasForeignKey(t => t.TournamentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Navigation(t => t.Teams);
-            builder.Navigation(t => t.Matches);
-            builder.Navigation(t => t.TournamentTeams);
+            builder.HasMany(t => t.TournamentTeams)
+                .WithOne(x => x.Tournament)
+                .HasForeignKey(x => x.TournamentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(new Tournament("Amistoso", 0));
 

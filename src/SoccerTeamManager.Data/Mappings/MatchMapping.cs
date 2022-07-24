@@ -10,26 +10,31 @@ namespace SoccerTeamManager.Infra.Data.Mappings
         {
             builder.HasKey(m => m.Id);
 
-
+            builder.Property(m => m.TournamentId).IsRequired();
             builder.Property(m => m.HomeTeamId).IsRequired();
             builder.Property(m => m.VisitorTeamId).IsRequired();
             builder.Property(m => m.MatchDate).IsRequired();
+            builder.Property(m => m.CreatedAt).IsRequired();
+            builder.Property(m => m.UpdatedAt);
+
+            builder.HasOne<Tournament>()
+                .WithMany()
+                .HasForeignKey(m => m.TournamentId);
 
             builder.HasOne(m => m.HomeTeam)
-                .WithMany(t => t.HomeMatches)
-                .HasForeignKey(m => m.HomeTeamId);
+                .WithMany()
+                .HasForeignKey(m => m.HomeTeamId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(m => m.VisitorTeam)
-                .WithMany(t => t.VisitorMatches)
-                .HasForeignKey(m => m.VisitorTeamId);
+                .WithMany()
+                .HasForeignKey(m => m.VisitorTeamId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(m => m.MatchEvents)
-                .WithOne(me => me.Match)
-                .HasForeignKey(me => me.MatchId);
-
-            builder.Navigation(m => m.HomeTeam);
-            builder.Navigation(m => m.VisitorTeam);
-            builder.Navigation(m => m.MatchEvents);
+                .WithOne()
+                .HasForeignKey(me => me.MatchId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Match", "manager");
         }

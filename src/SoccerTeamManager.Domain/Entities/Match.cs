@@ -6,13 +6,14 @@ namespace SoccerTeamManager.Domain.Entities
     {
         private List<MatchEvent> _matchEvents;
 
+        public Guid TournamentId { get; private set; }
         public Guid HomeTeamId { get; private set; }
         public Guid VisitorTeamId { get; private set; }
         public DateTime MatchDate { get; private set; }
         public IReadOnlyCollection<MatchEvent> MatchEvents => _matchEvents;
 
-        public Team? HomeTeam { get; private set; }
-        public Team? VisitorTeam { get; private set; }
+        public Team HomeTeam { get; private set; }
+        public Team VisitorTeam { get; private set; }
 
         public Match()
         {
@@ -21,8 +22,9 @@ namespace SoccerTeamManager.Domain.Entities
             _matchEvents = new List<MatchEvent>();
         }
 
-        public Match(Guid homeTeamId, Guid visitorTeamId, DateTime matchDate)
+        public Match(Guid tournamentId, Guid homeTeamId, Guid visitorTeamId, DateTime matchDate)
         {
+            TournamentId = tournamentId;
             HomeTeamId = homeTeamId;
             VisitorTeamId = visitorTeamId;
             MatchDate = matchDate;

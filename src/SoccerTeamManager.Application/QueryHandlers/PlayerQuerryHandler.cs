@@ -20,7 +20,7 @@ namespace SoccerTeamManager.Application.QueryHandlers
         {
             try
             {
-                var players = await _repository.Select(request.Id, request.Name, null, null, request.CbfCode);
+                var players = await _repository.Select(request.Id, request.Name, null, null, request.Cpf, true);
                 if (!players.Any())
                     return new RequestResult<Player>(HttpStatusCode.NotFound, new Player(), Enumerable.Empty<ErrorModel>());
 

@@ -25,16 +25,19 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             return insertResult.Entity;
         }
 
-        public async Task<IEnumerable<Player>> Select(Guid? id = null, string? name = null, Guid? countryId = null, Guid? CurrentTeamId = null, long? cbfCode = null)
+        public async Task<IEnumerable<Player>> Select(Guid? id = null, string? name = null, Guid? countryId = null, Guid? CurrentTeamId = null, string? cpf = null, bool includes = false)
         {
-            var players = await _context.Players.Where(player =>
+            var players = _context.Players.Where(player =>
                     player.Id == (id ?? player.Id) &&
                     player.Name == (name ?? player.Name) &&
                     player.CountryId == (countryId ?? player.CountryId) &&
                     player.CurrentTeamId == (CurrentTeamId ?? player.CurrentTeamId) &&
-                    player.CbfCode == (cbfCode ?? player.CbfCode)
-                ).ToListAsync();
-            return players;
+                    player.Cpf == (cpf ?? player.Cpf));
+
+            if (includes)
+                players.Include(x => x.Country);
+
+            return await players.ToListAsync();
         }
 
         public Player Update(Player player)

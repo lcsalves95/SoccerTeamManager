@@ -12,13 +12,19 @@ namespace SoccerTeamManager.Infra.Data.Mappings
 
             builder.Property(me => me.MatchId).IsRequired();
             builder.Property(me => me.EventType).IsRequired();
-            builder.Property(me => me.TeamId);
+            builder.Property(me => me.TimeOfOccurrence).IsRequired();
+            builder.Property(me => me.TeamId).IsRequired(false);
 
-            builder.HasOne(me => me.Match)
-                .WithMany(m => m.MatchEvents)
+            builder.Ignore(me => me.CreatedAt);
+            builder.Ignore(me => me.UpdatedAt);
+
+            builder.HasOne<Match>()
+                .WithMany()
                 .HasForeignKey(me => me.MatchId);
 
-            builder.Navigation(me => me.Match);
+            builder.HasOne<Team>()
+                .WithMany()
+                .HasForeignKey(me => me.TeamId);
 
             builder.ToTable("MatchEvent", "manager");
         }

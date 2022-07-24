@@ -2,14 +2,16 @@
 
 namespace SoccerTeamManager.Application.ViewModels
 {
-    public class TeamViewModel
+    public class InsertTeamViewModel
     {
         public string Name { get; set; }
-        public States Location { get; private set; }
+        public string Cnpj { get; set; }
+        public States Location { get; set; }
 
-        public TeamViewModel(string name, States location)
+        public InsertTeamViewModel(string name, string cnpj, States location)
         {
             Name = name;
+            Cnpj = cnpj;
             Location = location;
         }
     }

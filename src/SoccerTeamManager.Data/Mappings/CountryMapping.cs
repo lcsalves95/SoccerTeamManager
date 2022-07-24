@@ -15,11 +15,9 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.Ignore(c => c.CreatedAt);
             builder.Ignore(c => c.UpdatedAt);
 
-            builder.HasMany(c => c.Players)
-                .WithOne(p => p.Country)
+            builder.HasMany<Player>()
+                .WithOne()
                 .HasForeignKey(p => p.CountryId);
-
-            builder.Navigation(c => c.Players);
 
             builder.HasData(
                 new Country("Afeganistão"),
