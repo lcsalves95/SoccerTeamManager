@@ -52,5 +52,11 @@ namespace SoccerTeamManager.Infra.Data.Repositories
             var insertResult = await _context.AddAsync(matchEvent);
             return insertResult.Entity;
         }
+
+        public async Task<IEnumerable<MatchEvent>> SelectEvent(Guid matchId)
+        {
+            var events = await _context.MatchEvents.Where(x => x.MatchId == matchId).ToListAsync();
+            return events;
+        }
     }
 }

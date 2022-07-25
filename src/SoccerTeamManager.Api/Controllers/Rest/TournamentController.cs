@@ -119,10 +119,8 @@ namespace SoccerTeamManager.Api.Controllers.Rest
         [HttpGet("{tournamentId}/matches/{matchId}/events")]
         public async Task<IActionResult> GetMatchEvents(Guid tournamentId, Guid matchId)
         {
-            var requestResult = await _mediator.Send(new GetMatchQuery(tournamentId, matchId, true));
-            var matchData = (Match?)requestResult.Data;
-            var matchEventsResult = new RequestResult<MatchEvent>(requestResult.StatusCode, matchData?.MatchEvents, requestResult.Errors);
-            return GetCustomResponseMultipleData(matchEventsResult, HttpContext.Request.Path.Value);
+            var requestResult = await _mediator.Send(new GetMatchEventsQuery(tournamentId, matchId));
+            return GetCustomResponseMultipleData(requestResult, HttpContext.Request.Path.Value);
         }
 
         [HttpPost("{tournamentId}/matches/{matchId}/events")]
