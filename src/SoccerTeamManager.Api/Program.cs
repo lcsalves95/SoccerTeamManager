@@ -1,3 +1,4 @@
+using Confluent.Kafka;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
@@ -34,6 +35,10 @@ builder.Services.Scan(scan => scan.FromApplicationDependencies()
 
 builder.Services.AddValidatorsFromAssembly(typeof(SoccerTeamManager.Domain.AssemblyReference).Assembly);
 
+builder.Services.AddSingleton(new ProducerBuilder<string, string>(new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("bootstrap.servers", builder.Configuration.GetConnectionString("Kafka"))
+            }));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

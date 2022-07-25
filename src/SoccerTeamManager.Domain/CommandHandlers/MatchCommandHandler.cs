@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using Confluent.Kafka;
+using MediatR;
 using SoccerTeamManager.Domain.Commands;
 using SoccerTeamManager.Domain.Entities;
+using SoccerTeamManager.Domain.Events;
 using SoccerTeamManager.Domain.Interfaces;
+using SoccerTeamManager.Infra.KafkaSettings;
 using SoccerTeamManager.Infra.Responses;
 using System.Net;
 
@@ -16,13 +19,17 @@ namespace SoccerTeamManager.Domain.CommandHandlers
         private readonly IMatchRepository _matchRepository;
         private readonly IUnitOfWork _uow;
         private readonly List<ErrorModel> _errors;
+        private readonly ProducerBuilder<string, string> _kafkaBuilder;
 
-        public MatchCommandHandler(ITournamentRepository tournamentRepository, IMatchRepository matchRepository, IUnitOfWork uow)
+        private const string MATCH_EVENTS_TOPIC = "match-events";
+
+        public MatchCommandHandler(ITournamentRepository tournamentRepository, IMatchRepository matchRepository, IUnitOfWork uow, ProducerBuilder<string, string> kafkaBuilder)
         {
             _tournamentRepository = tournamentRepository;
             _matchRepository = matchRepository;
             _uow = uow;
             _errors = new List<ErrorModel>();
+            _kafkaBuilder = kafkaBuilder;
         }
 
         public async Task<RequestResult<Match>> Handle(InsertMatchCommand request, CancellationToken cancellationToken)
@@ -99,6 +106,9 @@ namespace SoccerTeamManager.Domain.CommandHandlers
                 var matchEvent = new MatchEvent(request.MatchId, request.Type, request.TeamId, request.TimeOfOccurence);
                 matchEvent = await _matchRepository.InsertEvent(matchEvent);
                 await _uow.Commit();
+
+                var producer = new ProducerWrapper(_kafkaBuilder);
+                await producer.WriteMessage(MATCH_EVENTS_TOPIC, new CreatedMatchEventEvent(request.MatchId, request.Type, request.TeamId, request.TimeOfOccurence));
 
                 return new RequestResult<MatchEvent>(HttpStatusCode.Created, matchEvent, _errors);
             }
