@@ -1,0 +1,41 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using SoccerTeamManager.Infra.Base;
+using SoccerTeamManager.Infra.Responses;
+using System.Net;
+
+namespace SoccerTeamManager.Api.Controllers.Rest
+{
+    public class BaseController : ControllerBase
+    {
+        protected IActionResult GetCustomResponseSingleData<TResponse>(RequestResult<TResponse> requestResult, string? successInstance = null, string? failInstance = null)
+            where TResponse : Entity
+        {
+            return requestResult.StatusCode switch
+            {
+                HttpStatusCode.OK => Ok(requestResult.Data),
+                HttpStatusCode.Created => CreatedAtAction(successInstance ?? string.Empty, new { requestResult.Data.Id }, requestResult.Data),
+                HttpStatusCode.NoContent => NoContent(),
+                HttpStatusCode.BadRequest => BadRequest(GetErrorResponse(failInstance, requestResult.Errors)),
+                HttpStatusCode.NotFound => NotFound(),
+                HttpStatusCode.PreconditionFailed => StatusCode(412, GetErrorResponse(failInstance, requestResult.Errors)),
+                _ => StatusCode(500, GetErrorResponse(failInstance, requestResult.Errors))
+            };
+        }
+
+        protected IActionResult GetCustomResponseMultipleData<TResponse>(RequestResult<TResponse> requestResult, string? failInstance = null)
+            where TResponse : Entity
+        {
+            return requestResult.StatusCode switch
+            {
+                HttpStatusCode.OK => Ok(requestResult.MultipleData),
+                HttpStatusCode.NotFound => NotFound(),
+                _ => StatusCode(500, GetErrorResponse(failInstance, requestResult.Errors))
+            };
+        }
+
+        private static ErrorResponse GetErrorResponse(string? instance, IEnumerable<ErrorModel> errors)
+        {
+            return new ErrorResponse(instance ?? string.Empty, errors);
+        }
+    }
+}

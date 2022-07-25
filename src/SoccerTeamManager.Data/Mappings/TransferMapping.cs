@@ -14,21 +14,25 @@ namespace SoccerTeamManager.Infra.Data.Mappings
             builder.Property(t => t.PlayerId).IsRequired();
             builder.Property(t => t.OriginTeamId).IsRequired();
             builder.Property(t => t.DestinationTeamId).IsRequired();
+            builder.Property(t => t.Ammount).IsRequired();
             builder.Property(t => t.CreatedAt).IsRequired();
 
             builder.Ignore(t => t.UpdatedAt);
 
             builder.HasOne(t => t.Player)
-                .WithMany(p => p.Tranfers)
-                .HasForeignKey(t => t.PlayerId);
+                .WithMany()
+                .HasForeignKey(t => t.PlayerId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.OriginTeam)
-                .WithMany(t => t.OutTranfers)
-                .HasForeignKey(t => t.OriginTeamId);
+                .WithMany()
+                .HasForeignKey(t => t.OriginTeamId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.DestinationTeam)
-                .WithMany(t => t.InTranfers)
-                .HasForeignKey(t => t.DestinationTeamId);
+                .WithMany()
+                .HasForeignKey(t => t.DestinationTeamId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("Transfer", "manager");
         }

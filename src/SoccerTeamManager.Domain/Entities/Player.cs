@@ -1,26 +1,29 @@
-﻿namespace SoccerTeamManager.Domain.Entities
+﻿using SoccerTeamManager.Infra.Base;
+
+namespace SoccerTeamManager.Domain.Entities
 {
     public class Player : Entity
     {
         public string Name { get; private set; } = string.Empty;
         public DateTime DateOfBirth { get; private set; }
-        public string Country { get; private set; } = string.Empty;
+        public Guid CountryId { get; private set; }
         public Guid? CurrentTeamId { get; private set; }
+        public string Cpf { get; private set; } = string.Empty;
 
-        public Team? CurrentTeam { get; private set; }
-        public ICollection<Transfer>? Tranfers { get; private set; }
+        public Country? Country { get; private set; }
 
         public Player()
         {
-
+            Country = new Country();
         }
 
-        public Player(string name, DateTime dateOfBirth, string country, Guid? currentTeamId)
+        public Player(string name, DateTime dateOfBirth, Guid countryId, Guid? currentTeamId, string cpf)
         {
             Name = name;
             DateOfBirth = dateOfBirth;
-            Country = country;
+            CountryId = countryId;
             CurrentTeamId = currentTeamId;
+            Cpf = cpf;
         }
 
         public void UpdateName(string name)
@@ -32,15 +35,31 @@
             UpdatedAt = DateTime.Now;
         }
 
-        public void UpdateCountry(string country)
+        public void UpdateDateOfBirth(DateTime dateOfBirth)
         {
-            if (string.IsNullOrEmpty(country) || string.IsNullOrWhiteSpace(country))
-                throw new ArgumentException("Parameter [country] must be valid.", nameof(country));
+            if (dateOfBirth > DateTime.Now.AddYears(-14) || dateOfBirth < DateTime.Now.AddYears(-100))
+                throw new ArgumentException("Parameter [dateOfBirth] must be valid.", nameof(dateOfBirth));
 
-            Country = country;
+            DateOfBirth = dateOfBirth;
             UpdatedAt = DateTime.Now;
         }
 
-        public void SetCurrentTeam(Guid teamId) => CurrentTeamId = teamId;
+        public void UpdateCountry(Guid countryId)
+        {
+            if (countryId == Guid.Empty)
+                throw new ArgumentException("Parameter [countryId] must be valid.", nameof(countryId));
+
+            CountryId = countryId;
+            UpdatedAt = DateTime.Now;
+        }
+
+        public void UpdateTeam(Guid teamId)
+        {
+            if (teamId == Guid.Empty)
+                throw new ArgumentException("Parameter [teamId] must be valid.", nameof(teamId));
+
+            CurrentTeamId = teamId;
+            UpdatedAt = DateTime.Now;
+        }
     }
 }

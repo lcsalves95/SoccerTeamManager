@@ -1,28 +1,29 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SoccerTeamManager.Domain.Enums;
+using SoccerTeamManager.Infra.Base;
 
 namespace SoccerTeamManager.Domain.Entities
 {
     public class Team : Entity
     {
         public string Name { get; private set; } = string.Empty;
+        public string Cnpj { get; private set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public States Location { get; private set; }
+
         public ICollection<Player>? Players { get; private set; }
-        public ICollection<Transfer>? OutTranfers { get; private set; }
-        public ICollection<Transfer>? InTranfers { get; private set; }
+        public ICollection<TournamentTeam>? TournamentTeams { get; private set; }
 
         public Team()
         {
-
         }
 
-        public Team(string name, States location, DateTime createdAt)
+        public Team(string name, string cnpj, States location)
         {
             Name = name;
+            Cnpj = cnpj;
             Location = location;
-            CreatedAt = createdAt;
         }
 
         public void UpdateName(string name)
@@ -34,7 +35,7 @@ namespace SoccerTeamManager.Domain.Entities
             UpdatedAt = DateTime.Now;
         }
 
-        public void UpdateState(States location)
+        public void UpdateLocation(States location)
         {
             if (!Enum.IsDefined(typeof(States), location))
                 throw new ArgumentException("Parameter [location] must be valid.", nameof(location));

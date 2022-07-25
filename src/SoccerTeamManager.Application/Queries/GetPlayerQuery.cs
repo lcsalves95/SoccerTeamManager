@@ -6,11 +6,17 @@ namespace SoccerTeamManager.Application.Queries
 {
     public class GetPlayerQuery : IQuery<RequestResult<Player>>
     {
-        public Guid playerId { get; private set; }
+        public Guid? Id { get; private set; }
+        public string? Name { get; private set; }
+        public string? Cpf { get; private set; }
+        public bool SingleData { get; private set; }
 
-        public GetPlayerQuery(Guid playerId)
+        public GetPlayerQuery(Guid? id = null, string? name = null, string? cpf = null, bool singleData = false)
         {
-            this.playerId = playerId;
+            Id = id;
+            Name = name;
+            Cpf = cpf;
+            SingleData = singleData;
         }
     }
 }

@@ -12,21 +12,37 @@ namespace SoccerTeamManager.Infra.Data.Mappings
 
             builder.Property(t => t.Id).IsRequired();
             builder.Property(t => t.Name).HasMaxLength(256).IsRequired();
+            builder.Property(t => t.Cnpj).HasMaxLength(14).IsRequired();
             builder.Property(t => t.Location).IsRequired();
             builder.Property(t => t.CreatedAt).IsRequired();
             builder.Property(t => t.UpdatedAt);
 
+            builder.HasIndex(x => x.Cnpj).IsUnique();
+
             builder.HasMany(t => t.Players)
-                .WithOne(x => x.CurrentTeam)
+                .WithOne()
                 .HasForeignKey(x => x.CurrentTeamId);
 
-            builder.HasMany(p => p.OutTranfers)
-                .WithOne(t => t.OriginTeam)
+            builder.HasMany<Transfer>()
+                .WithOne()
                 .HasForeignKey(t => t.OriginTeamId);
 
-            builder.HasMany(p => p.InTranfers)
-                .WithOne(t => t.DestinationTeam)
+            builder.HasMany<Transfer>()
+                .WithOne()
                 .HasForeignKey(t => t.DestinationTeamId);
+
+            builder.HasMany<Match>()
+                .WithOne(x => x.HomeTeam)
+                .HasForeignKey(m => m.HomeTeamId);
+
+            builder.HasMany<Match>()
+                .WithOne(x => x.VisitorTeam)
+                .HasForeignKey(m => m.VisitorTeamId);
+
+            builder.HasMany(t => t.TournamentTeams)
+                .WithOne()
+                .HasForeignKey(x => x.TeamId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.ToTable("Team", "manager");
         }

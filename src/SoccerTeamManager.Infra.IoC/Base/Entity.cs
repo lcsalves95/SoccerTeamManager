@@ -1,4 +1,4 @@
-﻿namespace SoccerTeamManager.Domain.Entities
+﻿namespace SoccerTeamManager.Infra.Base
 {
     public class Entity
     {
@@ -8,7 +8,8 @@
 
         public Entity()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.Now;
         }
     }
 }
