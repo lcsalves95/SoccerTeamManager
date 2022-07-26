@@ -25,6 +25,13 @@ namespace SoccerTeamManager.Application.QueryHandlers
                     return new RequestResult<MatchEvent>(HttpStatusCode.NotFound, new MatchEvent(), Enumerable.Empty<ErrorModel>());
 
                 var events = await _matchRepository.SelectEvent(match.Id);
+                if (request.Id != null)
+                {
+                    var matchEvent = events.FirstOrDefault(x => x.Id == request.Id);
+                    if (matchEvent == null)
+                        return new RequestResult<MatchEvent>(HttpStatusCode.NotFound, new MatchEvent(), Enumerable.Empty<ErrorModel>());
+                    return new RequestResult<MatchEvent>(HttpStatusCode.OK, matchEvent, Enumerable.Empty<ErrorModel>());
+                }
                 return new RequestResult<MatchEvent>(HttpStatusCode.OK, events, Enumerable.Empty<ErrorModel>());
             }
             catch

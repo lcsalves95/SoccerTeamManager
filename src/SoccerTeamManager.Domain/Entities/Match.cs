@@ -1,4 +1,5 @@
 ﻿using SoccerTeamManager.Infra.Base;
+using System.Text.Json.Serialization;
 
 namespace SoccerTeamManager.Domain.Entities
 {
@@ -11,6 +12,7 @@ namespace SoccerTeamManager.Domain.Entities
         
         public Team HomeTeam { get; private set; }
         public Team VisitorTeam { get; private set; }
+        [JsonIgnore]
         public ICollection<MatchEvent> MatchEvents { get; private set; }
 
         public Match()
