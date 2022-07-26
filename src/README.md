@@ -12,7 +12,7 @@
 
 2 - Verificar se as strings de conexão estão corretas nos arquivo 'appsettings.json'.
 
-3 - Abrir o projeto em seu `Visual Studio`, abri o `Console de gerenciador de pacotes`, apontá-lo para a camada `SoccerTeamManager.Infra.Data` e executar o seguinte comando:
+3 - Abrir o projeto em seu `Visual Studio`, abrir o `Console de gerenciador de pacotes`, apontá-lo para a camada `SoccerTeamManager.Infra.Data` e executar o seguinte comando:
 
 ```
 Update-Database
