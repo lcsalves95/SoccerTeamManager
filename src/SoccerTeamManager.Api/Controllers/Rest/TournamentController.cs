@@ -119,17 +119,22 @@ namespace SoccerTeamManager.Api.Controllers.Rest
         [HttpGet("{tournamentId}/matches/{matchId}/events")]
         public async Task<IActionResult> GetMatchEvents(Guid tournamentId, Guid matchId)
         {
-            var requestResult = await _mediator.Send(new GetMatchQuery(tournamentId, matchId, true));
-            var matchData = (Match?)requestResult.Data;
-            var matchEventsResult = new RequestResult<MatchEvent>(requestResult.StatusCode, matchData?.MatchEvents, requestResult.Errors);
-            return GetCustomResponseMultipleData(matchEventsResult, HttpContext.Request.Path.Value);
+            var requestResult = await _mediator.Send(new GetMatchEventsQuery(tournamentId, matchId));
+            return GetCustomResponseMultipleData(requestResult, HttpContext.Request.Path.Value);
+        }
+
+        [HttpGet("{tournamentId}/matches/{matchId}/events/{id}")]
+        public async Task<IActionResult> GetMatchEventById(Guid tournamentId, Guid matchId, Guid id)
+        {
+            var requestResult = await _mediator.Send(new GetMatchEventsQuery(tournamentId, matchId, id));
+            return GetCustomResponseSingleData(requestResult, failInstance: HttpContext.Request.Path.Value);
         }
 
         [HttpPost("{tournamentId}/matches/{matchId}/events")]
         public async Task<IActionResult> InsertMatchEvents(Guid tournamentId, Guid matchId, InsertMatchEventViewModel model)
         {
             var requestResult = await _mediator.Send(new InsertMatchEventCommand(tournamentId, matchId, model.TeamId, model.Type, model.TimeOfOccurrence));
-            return GetCustomResponseSingleData(requestResult, null, HttpContext.Request.Path.Value);
+            return GetCustomResponseSingleData(requestResult, nameof(GetById), HttpContext.Request.Path.Value);
         }
     }
 }

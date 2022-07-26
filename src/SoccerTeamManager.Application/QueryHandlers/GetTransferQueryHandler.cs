@@ -21,12 +21,12 @@ namespace SoccerTeamManager.Application.QueryHandlers
             try
             {
                 var transfers = await _repository.Select(request.Id, request.PlayerId, request.OriginTeamId, request.DestinationTeamId, includes: true);
-                if (!transfers.Any())
-                    return new RequestResult<Transfer>(HttpStatusCode.NotFound, new Transfer(), Enumerable.Empty<ErrorModel>());
-
+                
                 if (request.SingleData)
                 {
                     var transfer = transfers.FirstOrDefault();
+                    if (transfer == null)
+                        return new RequestResult<Transfer>(HttpStatusCode.NotFound, new Transfer(), Enumerable.Empty<ErrorModel>());
                     return new RequestResult<Transfer>(HttpStatusCode.OK, transfer, Enumerable.Empty<ErrorModel>());
                 }
 

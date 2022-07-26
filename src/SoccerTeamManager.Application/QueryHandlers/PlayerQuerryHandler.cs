@@ -24,6 +24,8 @@ namespace SoccerTeamManager.Application.QueryHandlers
                 if (request.SingleData)
                 {
                     var player = players.FirstOrDefault();
+                    if (player == null)
+                        return new RequestResult<Player>(HttpStatusCode.NotFound, new Player(), Enumerable.Empty<ErrorModel>());
                     return new RequestResult<Player>(HttpStatusCode.OK, player, Enumerable.Empty<ErrorModel>());
                 }
 

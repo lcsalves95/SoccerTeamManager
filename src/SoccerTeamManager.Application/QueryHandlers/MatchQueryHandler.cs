@@ -9,20 +9,24 @@ namespace SoccerTeamManager.Application.QueryHandlers
 {
     public class MatchQueryHandler : IRequestHandler<GetMatchQuery, RequestResult<Match>>
     {
-        private readonly IMatchRepository _repository;
+        private readonly IMatchRepository _matchRepository;
+        private readonly ITournamentRepository _tournamentRepository;
 
-        public MatchQueryHandler(IMatchRepository repository)
+        public MatchQueryHandler(IMatchRepository repository, ITournamentRepository tournamentRepository)
         {
-            _repository = repository;
+            _matchRepository = repository;
+            _tournamentRepository = tournamentRepository;
         }
 
         public async Task<RequestResult<Match>> Handle(GetMatchQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var matches = (await _repository.Select(tournamentId: request.TournamentId, includes: true));
-                if (matches == null)
+                var tournament = (await _tournamentRepository.Select(id: request.TournamentId)).FirstOrDefault();
+                if (tournament == null)
                     return new RequestResult<Match>(HttpStatusCode.NotFound, new Match(), Enumerable.Empty<ErrorModel>());
+
+                var matches = await _matchRepository.Select(tournamentId: request.TournamentId, includes: true);
 
                 if (request.SingleData)
                 {

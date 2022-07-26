@@ -21,12 +21,12 @@ namespace SoccerTeamManager.Application.QueryHandlers
             try
             {
                 var tournaments = await _repository.Select(request.Id, request.Name, true);
-                if (!tournaments.Any())
-                    return new RequestResult<Tournament>(HttpStatusCode.NotFound, new Tournament(), Enumerable.Empty<ErrorModel>());
 
                 if (request.SingleData)
                 {
                     var tournament = tournaments.FirstOrDefault();
+                    if (tournament == null)
+                        return new RequestResult<Tournament>(HttpStatusCode.NotFound, new Tournament(), Enumerable.Empty<ErrorModel>());
                     return new RequestResult<Tournament>(HttpStatusCode.OK, tournament, Enumerable.Empty<ErrorModel>());
                 }
 
