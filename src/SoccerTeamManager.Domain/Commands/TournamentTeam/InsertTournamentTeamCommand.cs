@@ -1,10 +1,10 @@
-﻿using SoccerTeamManager.Domain.Entities;
+﻿using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Domain.Commands
 {
-    public class InsertTournamentTeamCommand : ICommand<RequestResult<TournamentTeam>>
+    public class InsertTournamentTeamCommand : ICommand<RequestResult<TournamentOutput>>
     {
         public Guid TournamentId { get; private set; }
         public Guid TeamId { get; private set; }

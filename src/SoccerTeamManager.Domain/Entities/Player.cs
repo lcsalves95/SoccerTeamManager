@@ -10,7 +10,8 @@ namespace SoccerTeamManager.Domain.Entities
         public Guid? CurrentTeamId { get; private set; }
         public string Cpf { get; private set; } = string.Empty;
 
-        public Country? Country { get; private set; }
+        public Country? Country { get; }
+        public Team? CurrentTeam { get; }
 
         public Player()
         {

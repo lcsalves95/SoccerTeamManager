@@ -9,9 +9,10 @@ namespace SoccerTeamManager.Domain.Entities
         public Guid HomeTeamId { get; private set; }
         public Guid VisitorTeamId { get; private set; }
         public DateTime MatchDate { get; private set; }
-        
-        public Team HomeTeam { get; private set; }
-        public Team VisitorTeam { get; private set; }
+
+        public Tournament Tournament { get; }
+        public Team HomeTeam { get; }
+        public Team VisitorTeam { get; }
         [JsonIgnore]
         public ICollection<MatchEvent> MatchEvents { get; private set; }
 

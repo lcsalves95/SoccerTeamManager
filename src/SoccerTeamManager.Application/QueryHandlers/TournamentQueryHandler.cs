@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using SoccerTeamManager.Application.Queries;
-using SoccerTeamManager.Domain.Entities;
 using SoccerTeamManager.Domain.Interfaces;
+using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Responses;
 using System.Net;
 
 namespace SoccerTeamManager.Application.QueryHandlers
 {
-    public class TournamentQueryHandler : IRequestHandler<GetTournamentQuery, RequestResult<Tournament>>
+    public class TournamentQueryHandler : IRequestHandler<GetTournamentQuery, RequestResult<TournamentOutput>>
     {
         private readonly ITournamentRepository _repository;
 
@@ -16,7 +16,7 @@ namespace SoccerTeamManager.Application.QueryHandlers
             _repository = repository;
         }
 
-        public async Task<RequestResult<Tournament>> Handle(GetTournamentQuery request, CancellationToken cancellationToken)
+        public async Task<RequestResult<TournamentOutput>> Handle(GetTournamentQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -26,15 +26,15 @@ namespace SoccerTeamManager.Application.QueryHandlers
                 {
                     var tournament = tournaments.FirstOrDefault();
                     if (tournament == null)
-                        return new RequestResult<Tournament>(HttpStatusCode.NotFound, new Tournament(), Enumerable.Empty<ErrorModel>());
-                    return new RequestResult<Tournament>(HttpStatusCode.OK, tournament, Enumerable.Empty<ErrorModel>());
+                        return new RequestResult<TournamentOutput>(HttpStatusCode.NotFound, default(TournamentOutput), Enumerable.Empty<ErrorModel>());
+                    return new RequestResult<TournamentOutput>(HttpStatusCode.OK, TournamentOutput.FromEntity(tournament), Enumerable.Empty<ErrorModel>());
                 }
-
-                return new RequestResult<Tournament>(HttpStatusCode.OK, tournaments, Enumerable.Empty<ErrorModel>());
+                var output = tournaments.Select(t => TournamentOutput.FromEntity(t));
+                return new RequestResult<TournamentOutput>(HttpStatusCode.OK, output, Enumerable.Empty<ErrorModel>());
             }
             catch
             {
-                return new RequestResult<Tournament>(HttpStatusCode.InternalServerError, new Tournament(), Enumerable.Empty<ErrorModel>());
+                return new RequestResult<TournamentOutput>(HttpStatusCode.InternalServerError, default(TournamentOutput), Enumerable.Empty<ErrorModel>());
             }
         }
     }

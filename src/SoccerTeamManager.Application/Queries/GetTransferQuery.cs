@@ -1,10 +1,10 @@
-﻿using SoccerTeamManager.Domain.Entities;
+﻿using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Application.Queries
 {
-    public class GetTransferQuery : IQuery<RequestResult<Transfer>>
+    public class GetTransferQuery : IQuery<RequestResult<TransferOutput>>
     {
         public Guid? Id { get; private set; }
         public Guid? PlayerId { get; private set; }

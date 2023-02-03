@@ -1,12 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SoccerTeamManager.Application.Queries;
-using SoccerTeamManager.Domain.Entities;
-using SoccerTeamManager.Infra.Responses;
 
-namespace SoccerTeamManager.Api.Controllers.Rest
+namespace SoccerTeamManager.Api.Controllers
 {
-    [Route("api/rest/countries")]
+    [Route("api/countries")]
     [ApiController]
     public class CountryController : BaseController
     {

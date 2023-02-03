@@ -1,10 +1,11 @@
 ﻿using SoccerTeamManager.Domain.Entities;
+using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Domain.Commands
 {
-    public class InsertPlayerCommand : ICommand<RequestResult<Player>>
+    public class InsertPlayerCommand : ICommand<RequestResult<PlayerOutput>>
     {
         public string Name { get; private set; }
         public DateTime DateOfBirth { get; private set; }

@@ -1,10 +1,10 @@
-﻿using SoccerTeamManager.Domain.Entities;
+﻿using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Domain.Commands
 {
-    public class UpdatePlayerCommand : ICommand<RequestResult<Player>>
+    public class UpdatePlayerCommand : ICommand<RequestResult<PlayerOutput>>
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }

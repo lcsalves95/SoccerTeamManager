@@ -1,11 +1,11 @@
-﻿using SoccerTeamManager.Domain.Entities;
-using SoccerTeamManager.Domain.Enums;
+﻿using SoccerTeamManager.Domain.Enums;
+using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Application.Queries
 {
-    public class GetTeamQuery : IQuery<RequestResult<Team>>
+    public class GetTeamQuery : IQuery<RequestResult<TeamOutput>>
     {
         public Guid? Id { get; private set; }
         public string? Name { get; private set; }

@@ -8,6 +8,8 @@ namespace SoccerTeamManager.Domain.Entities
         public Guid TeamId { get; private set; }
 
 
+        public Team Team { get; }
+
         public TournamentTeam()
         {
         }

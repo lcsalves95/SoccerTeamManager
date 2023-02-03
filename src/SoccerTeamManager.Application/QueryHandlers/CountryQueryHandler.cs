@@ -2,12 +2,13 @@
 using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Domain.Entities;
 using SoccerTeamManager.Domain.Interfaces;
+using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Responses;
 using System.Net;
 
 namespace SoccerTeamManager.Application.QueryHandlers
 {
-    internal class CountryQueryHandler : IRequestHandler<GetCountryQuery, RequestResult<Country>>
+    internal class CountryQueryHandler : IRequestHandler<GetCountryQuery, RequestResult<CountryOutput>>
     {
         private readonly ICountryRepository _repository;
 
@@ -16,7 +17,7 @@ namespace SoccerTeamManager.Application.QueryHandlers
             _repository = repository;
         }
 
-        public async Task<RequestResult<Country>> Handle(GetCountryQuery request, CancellationToken cancellationToken)
+        public async Task<RequestResult<CountryOutput>> Handle(GetCountryQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -26,15 +27,15 @@ namespace SoccerTeamManager.Application.QueryHandlers
                 {
                     var country = countries.FirstOrDefault();
                     if (country == null)
-                        return new RequestResult<Country>(HttpStatusCode.NotFound, new Country(), Enumerable.Empty<ErrorModel>());
-                    return new RequestResult<Country>(HttpStatusCode.OK, country, Enumerable.Empty<ErrorModel>());
+                        return new RequestResult<CountryOutput>(HttpStatusCode.NotFound, default(CountryOutput), Enumerable.Empty<ErrorModel>());
+                    return new RequestResult<CountryOutput>(HttpStatusCode.OK, new CountryOutput(country.Id, country.Name), Enumerable.Empty<ErrorModel>());
                 }
-
-                return new RequestResult<Country>(HttpStatusCode.OK, countries, Enumerable.Empty<ErrorModel>());
+                var output = countries.Select(c => new CountryOutput(c.Id, c.Name));
+                return new RequestResult<CountryOutput>(HttpStatusCode.OK, output, Enumerable.Empty<ErrorModel>());
             }
             catch
             {
-                return new RequestResult<Country>(HttpStatusCode.InternalServerError, new Country(), Enumerable.Empty<ErrorModel>());
+                return new RequestResult<CountryOutput>(HttpStatusCode.InternalServerError, default(CountryOutput), Enumerable.Empty<ErrorModel>());
             }
         }
     }

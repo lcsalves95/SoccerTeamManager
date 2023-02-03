@@ -1,10 +1,10 @@
-﻿using SoccerTeamManager.Domain.Entities;
+﻿using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Messages;
 using SoccerTeamManager.Infra.Responses;
 
 namespace SoccerTeamManager.Domain.Commands
 {
-    public class InsertTransferCommand : ICommand<RequestResult<Transfer>>
+    public class InsertTransferCommand : ICommand<RequestResult<TransferOutput>>
     {
         public Guid PlayerId { get; private set; }
         public Guid OriginTeamId { get; private set; }

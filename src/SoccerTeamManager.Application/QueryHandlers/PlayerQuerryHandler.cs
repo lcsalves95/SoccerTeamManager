@@ -1,13 +1,13 @@
 ﻿using MediatR;
+using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Application.Queries;
-using SoccerTeamManager.Domain.Entities;
 using SoccerTeamManager.Domain.Interfaces;
 using SoccerTeamManager.Infra.Responses;
 using System.Net;
 
 namespace SoccerTeamManager.Application.QueryHandlers
 {
-    public class PlayerQuerryHandler : IRequestHandler<GetPlayerQuery, RequestResult<Player>>
+    public class PlayerQuerryHandler : IRequestHandler<GetPlayerQuery, RequestResult<PlayerOutput>>
     {
         private readonly IPlayerRepository _repository;
 
@@ -16,7 +16,7 @@ namespace SoccerTeamManager.Application.QueryHandlers
             _repository = repository;
         }
 
-        public async Task<RequestResult<Player>> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
+        public async Task<RequestResult<PlayerOutput>> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -25,15 +25,16 @@ namespace SoccerTeamManager.Application.QueryHandlers
                 {
                     var player = players.FirstOrDefault();
                     if (player == null)
-                        return new RequestResult<Player>(HttpStatusCode.NotFound, new Player(), Enumerable.Empty<ErrorModel>());
-                    return new RequestResult<Player>(HttpStatusCode.OK, player, Enumerable.Empty<ErrorModel>());
-                }
+                        return new RequestResult<PlayerOutput>(HttpStatusCode.NotFound, default(PlayerOutput), Enumerable.Empty<ErrorModel>());
 
-                return new RequestResult<Player>(HttpStatusCode.OK, players, Enumerable.Empty<ErrorModel>());
+                    return new RequestResult<PlayerOutput>(HttpStatusCode.OK, PlayerOutput.FromEntity(player), Enumerable.Empty<ErrorModel>());
+                }
+                var output = players.Select(p => PlayerOutput.FromEntity(p));
+                return new RequestResult<PlayerOutput>(HttpStatusCode.OK, output, Enumerable.Empty<ErrorModel>());
             }
             catch
             {
-                return new RequestResult<Player>(HttpStatusCode.InternalServerError, new Player(), Enumerable.Empty<ErrorModel>());
+                return new RequestResult<PlayerOutput>(HttpStatusCode.InternalServerError, default(PlayerOutput), Enumerable.Empty<ErrorModel>());
             }
         }
     }

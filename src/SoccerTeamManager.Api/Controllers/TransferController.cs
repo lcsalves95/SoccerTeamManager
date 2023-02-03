@@ -4,9 +4,9 @@ using SoccerTeamManager.Application.Queries;
 using SoccerTeamManager.Application.ViewModels;
 using SoccerTeamManager.Domain.Commands;
 
-namespace SoccerTeamManager.Api.Controllers.Rest
+namespace SoccerTeamManager.Api.Controllers
 {
-    [Route("api/rest/transfers")]
+    [Route("api/transfers")]
     [ApiController]
     public class TransferController : BaseController
     {

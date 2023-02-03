@@ -2,12 +2,13 @@
 using SoccerTeamManager.Domain.Commands;
 using SoccerTeamManager.Domain.Entities;
 using SoccerTeamManager.Domain.Interfaces;
+using SoccerTeamManager.Domain.Outputs;
 using SoccerTeamManager.Infra.Responses;
 using System.Net;
 
 namespace SoccerTeamManager.Domain.CommandHandlers
 {
-    public class TransferCommandHandler : IRequestHandler<InsertTransferCommand, RequestResult<Transfer>>
+    public class TransferCommandHandler : IRequestHandler<InsertTransferCommand, RequestResult<TransferOutput>>
     {
         private readonly ITransferRepository _transferRepository;
         private readonly IPlayerRepository _playerRepository;
@@ -22,7 +23,7 @@ namespace SoccerTeamManager.Domain.CommandHandlers
             _errors = new List<ErrorModel>();
         }
 
-        public async Task<RequestResult<Transfer>> Handle(InsertTransferCommand request, CancellationToken cancellationToken)
+        public async Task<RequestResult<TransferOutput>> Handle(InsertTransferCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -34,12 +35,12 @@ namespace SoccerTeamManager.Domain.CommandHandlers
                 player = _playerRepository.Update(player);
 
                 await _uow.Commit();
-                return new RequestResult<Transfer>(HttpStatusCode.Created, transfer, Enumerable.Empty<ErrorModel>());
+                return new RequestResult<TransferOutput>(HttpStatusCode.Created, TransferOutput.FromEntity(transfer), Enumerable.Empty<ErrorModel>());
             }
             catch (Exception)
             {
                 _errors.Add(new ErrorModel("InternalError", $"Ocorreu um erro inesperado durante o cadastro da tranferencia do jogador:[{request.PlayerId}]"));
-                return new RequestResult<Transfer>(HttpStatusCode.InternalServerError, new Transfer(), _errors);
+                return new RequestResult<TransferOutput>(HttpStatusCode.InternalServerError, default(TransferOutput), _errors);
             }
         }
     }
